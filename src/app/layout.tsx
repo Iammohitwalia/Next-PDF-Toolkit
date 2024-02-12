@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.css";
+import ReduxStoreProvider from "./redux-store-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -52,8 +53,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      {/* <head>
+    <ReduxStoreProvider>
+      <html lang="en">
+        {/* <head>
         <meta charSet="utf-8" />
         <meta
           name="viewport"
@@ -80,7 +82,8 @@ export default function RootLayout({
         <meta property="og:image" content="https://next-pdftoolkit.subhamk.com/android-chrome-192x192.png" />
       </head> */}
 
-      <body className={inter.className}>{children}</body>
-    </html>
+        <body className={inter.className}>{children}</body>
+      </html>
+    </ReduxStoreProvider>
   );
 }

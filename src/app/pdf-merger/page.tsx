@@ -4,68 +4,74 @@ import FilePicker from "@/components/shared/file-picker";
 import CircularSpinner from "@/components/shared/spinners";
 import { sleep } from "@/components/utils/utils";
 import { ReactElement, useState } from "react";
-
-interface ProcessedFile {
-  Position: number;
-  ProcessedFile: File;
-}
+import { ProcessedFile } from "@/components/models/processed-file";
+import { useAppDispatch, useAppSelector, useAppStore } from "@/lib/redux-hooks";
+import {
+  refreshCoreState,
+  setIsUploadComplete,
+  setIsUploadInitiated,
+  setUploadErrorMessage,
+  setUploadMessage
+} from "@/lib/features/pdf-core/pdf-core-slice";
+import { PdfMergerState, initialPdfMergerState } from "@/components/pdf-merger/pdf-merger";
 
 export default function PDFMerger(): ReactElement {
-  const [uploadedFiles, setUploadedFiles] = useState<ProcessedFile[]>([]);
-  const [isUploadComplete, setIsUploadComplete] = useState<boolean>(false);
-  const [isUploadInitiated, setIsUploadInitiated] = useState<boolean>(false);
-  const [uploadMessage, setUploadMessage] = useState<string>("");
-  const [uploadErrorMessage, setUploadErrorMessage] = useState<string>("");
+  const store = useAppStore();
+  const dispatch = useAppDispatch();
+  const pdfCoreState = useAppSelector((state) => state.pdfCore);
 
-  async function UploadFiles(files: FileList | null): Promise<void> {
-    setUploadedFiles([]);
-    setIsUploadComplete(false);
-    setIsUploadInitiated(true);
-    setUploadMessage("");
-    setUploadErrorMessage("");
+  const [pdfMergerState, setPdfMergerState] = useState<PdfMergerState>(initialPdfMergerState);
+
+  async function uploadFilesInitializer(files: FileList | null): Promise<void> {
+    setPdfMergerState(initialPdfMergerState);
+    dispatch(refreshCoreState());
+    dispatch(setIsUploadInitiated(true));
 
     let processedFiles: ProcessedFile[] = [];
     if (files !== null) {
       for (let i: number = 0; i < files.length; i++) {
         if (files.item(i) !== null) {
           let newFile: File = files.item(i) as File;
-          processedFiles = processedFiles.concat({ Position: i + 1, ProcessedFile: newFile });
+          processedFiles = processedFiles.concat({ Id: i + 1, Content: newFile });
         }
       }
     }
     await sleep(1500);
-    setUploadedFiles(processedFiles);
+    setPdfMergerState({ ...pdfMergerState, UploadedFiles: processedFiles });
     if (processedFiles.length > 1) {
-      setUploadMessage(`${processedFiles.length} PDF files uploaded. ✅`);
+      dispatch(setUploadMessage(`${processedFiles.length} PDF files uploaded. ✅`));
     } else {
-      setUploadErrorMessage("Just 1 PDF file uploaded, which is not enough! You have to upload at least 2 files.");
+      dispatch(setUploadErrorMessage("Just 1 PDF file uploaded, which is not enough! You have to upload at least 2 files."));
     }
-    setIsUploadComplete(true);
+    dispatch(setIsUploadComplete(true));
   }
 
-  function MoveFileUp(file: ProcessedFile): void {
-    const index: number = uploadedFiles.indexOf(file);
-    uploadedFiles.splice(index, 1);
-    uploadedFiles.splice(index - 1, 0, file);
-    setUploadedFiles([...uploadedFiles]);
+  function moveFileUp(file: ProcessedFile): void {
+    const index: number = pdfMergerState.UploadedFiles.indexOf(file);
+    let newFiles: ProcessedFile[] = [...pdfMergerState.UploadedFiles];
+    newFiles.splice(index, 1);
+    newFiles.splice(index - 1, 0, file);
+    setPdfMergerState({ ...pdfMergerState, UploadedFiles: newFiles });
   }
 
-  function MoveFileDown(file: ProcessedFile): void {
-    const index: number = uploadedFiles.indexOf(file);
-    uploadedFiles.splice(index, 1);
-    uploadedFiles.splice(index + 1, 0, file);
-    setUploadedFiles([...uploadedFiles]);
+  function moveFileDown(file: ProcessedFile): void {
+    const index: number = pdfMergerState.UploadedFiles.indexOf(file);
+    let newFiles: ProcessedFile[] = [...pdfMergerState.UploadedFiles];
+    newFiles.splice(index, 1);
+    newFiles.splice(index + 1, 0, file);
+    setPdfMergerState({ ...pdfMergerState, UploadedFiles: newFiles });
   }
 
-  function RemoveFile(file: ProcessedFile): void {
-    const index: number = uploadedFiles.indexOf(file);
-    uploadedFiles.splice(index, 1);
-    setUploadedFiles([...uploadedFiles]);
+  function removeFile(file: ProcessedFile): void {
+    const index: number = pdfMergerState.UploadedFiles.indexOf(file);
+    let newFiles: ProcessedFile[] = [...pdfMergerState.UploadedFiles];
+    newFiles.splice(index, 1);
+    setPdfMergerState({ ...pdfMergerState, UploadedFiles: newFiles });
 
-    if (uploadedFiles.length > 1) {
-      setUploadMessage(`${uploadedFiles.length} PDF files are left. ✅`);
+    if (newFiles.length > 1) {
+      dispatch(setUploadMessage(`${newFiles.length} PDF files are left. ✅`));
     } else {
-      setUploadErrorMessage("Not enough PDF files left! At least 2 files are needed.");
+      dispatch(setUploadErrorMessage("Not enough PDF files left! At least 2 files are needed."));
     }
   }
 
@@ -79,8 +85,8 @@ export default function PDFMerger(): ReactElement {
           <div>Upload your PDF files</div>
           <div className="mt-4 max-sm:mt-3 text-xl max-sm:text-[1.2rem]">Limit - 20 Files / 20 MB Each</div>
         </div>
-        <FilePicker IsMultiple={true} FileType="application/pdf" UploadFiles={UploadFiles} />
-        {isUploadInitiated && !isUploadComplete && (
+        <FilePicker IsMultiple={true} FileType="application/pdf" UploadFiles={uploadFilesInitializer} />
+        {pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && (
           <div>
             <div className="flex justify-center items-center text-center mt-11 mb-8 max-sm:mt-9 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-[sans-serif]">
               Uploading your file(s)... ⏳
@@ -88,46 +94,46 @@ export default function PDFMerger(): ReactElement {
             <CircularSpinner />
           </div>
         )}
-        {isUploadComplete && (
+        {pdfCoreState.IsUploadComplete && (
           <div>
             <div className="flex justify-center items-center text-center mt-11 mb-8 max-sm:mt-9 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-[sans-serif]">
-              {uploadedFiles.length > 1 ? (
+              {pdfMergerState.UploadedFiles.length > 1 ? (
                 <div>
-                  <p className="px-10">{uploadMessage}</p>
+                  <p className="px-10">{pdfCoreState.UploadMessage}</p>
                 </div>
               ) : (
                 <div>
-                  <p className="px-10">{uploadErrorMessage}</p>
-                  <p className="mt-3 text-[3rem] max-sm:text-[2.2rem]">😕</p>
+                  <p className="px-10">{pdfCoreState.UploadErrorMessage}</p>
+                  {pdfCoreState.UploadErrorMessage.length > 0 && <p className="mt-3 text-[3rem] max-sm:text-[2.2rem]">😕</p>}
                 </div>
               )}
             </div>
-            {uploadedFiles.length > 1 && (
+            {pdfMergerState.UploadedFiles.length > 1 && (
               <table className="flex justify-center items-center table-fixed border-collapse mx-14 text-[1.05rem]">
                 <tbody>
-                  {uploadedFiles.map((file: ProcessedFile) => (
-                    <tr key={file.Position}>
+                  {pdfMergerState.UploadedFiles.map((file: ProcessedFile) => (
+                    <tr key={file.Id}>
                       <td className="pb-[0.8rem] max-sm:pb-[0.65rem] text-center pr-1">{"●"}</td>
-                      <td className="pb-[0.8rem] max-sm:pb-[0.65rem] pr-3 max-sm:pr-2">{file.ProcessedFile!.name}</td>
+                      <td className="pb-[0.8rem] max-sm:pb-[0.65rem] pr-3 max-sm:pr-2">{file.Content!.name}</td>
                       <td className="max-sm:w-1/4 pb-[0.8rem] max-sm:pb-[0.65rem] text-center">
-                        {uploadedFiles.indexOf(file) > 0 && (
+                        {pdfMergerState.UploadedFiles.indexOf(file) > 0 && (
                           <span
                             className="px-2 hover:text-white cursor-pointer fa-solid fa-arrow-up"
                             title="Move File Up"
-                            onClick={() => MoveFileUp(file)}
+                            onClick={() => moveFileUp(file)}
                           ></span>
                         )}
-                        {uploadedFiles.indexOf(file) < uploadedFiles.length - 1 && (
+                        {pdfMergerState.UploadedFiles.indexOf(file) < pdfMergerState.UploadedFiles.length - 1 && (
                           <span
                             className="px-2 hover:text-white cursor-pointer fa-solid fa-arrow-down"
                             title="Move File Down"
-                            onClick={() => MoveFileDown(file)}
+                            onClick={() => moveFileDown(file)}
                           ></span>
                         )}
                         <span
                           className="px-2 hover:text-white cursor-pointer fa-solid fa-xmark"
                           title="Remove File"
-                          onClick={() => RemoveFile(file)}
+                          onClick={() => removeFile(file)}
                         ></span>
                       </td>
                     </tr>
