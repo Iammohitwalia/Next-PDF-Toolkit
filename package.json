@@ -2,9 +2,6 @@
   "name": "next-pdf-toolkit",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": ">=v18.17.0"
-  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
