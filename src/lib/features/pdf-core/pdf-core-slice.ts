@@ -21,9 +21,13 @@ export const pdfCoreSlice = createSlice({
       state.UploadErrorMessage = action.payload;
     },
 
+    setSubmitMessage: (state, action: PayloadAction<string>) => {
+      state.SubmitMessage = action.payload;
+    },
+
     refreshCoreState: (state) => {
       state.IsUploadComplete = false;
-      state.IsUploadInitiated = true;
+      state.IsUploadInitiated = false;
       state.UploadMessage = "";
       state.UploadErrorMessage = "";
       state.SubmitMessage = "";
@@ -33,7 +37,13 @@ export const pdfCoreSlice = createSlice({
   }
 });
 
-export const { setIsUploadComplete, setIsUploadInitiated, setUploadMessage, setUploadErrorMessage, refreshCoreState } =
-  pdfCoreSlice.actions;
+export const {
+  setIsUploadComplete,
+  setIsUploadInitiated,
+  setUploadMessage,
+  setUploadErrorMessage,
+  setSubmitMessage,
+  refreshCoreState
+} = pdfCoreSlice.actions;
 
 export default pdfCoreSlice.reducer;
