@@ -31,8 +31,8 @@ export default function PDFMerger(): ReactElement {
   }, [dispatch]);
 
   async function uploadFilesInitializer(files: FileList | null): Promise<void> {
-    setPdfMergerState(initialPdfMergerState);
     dispatch(refreshCoreState());
+    setPdfMergerState(initialPdfMergerState);
     dispatch(setIsUploadInitiated(true));
 
     let processedFiles: ProcessedFile[] = [];
@@ -84,10 +84,19 @@ export default function PDFMerger(): ReactElement {
     }
   }
 
-  function submitFiles(): void {
+  async function submitFiles(): Promise<void> {
     let submitMessage: string = `Merging ${pdfMergerState.UploadedFiles.length} PDF files... ⏳`;
     dispatch(setSubmitMessage(submitMessage));
     setPdfMergerState((prev) => ({ ...prev, IsMergeInitiated: true }));
+    // await sleep(1500);
+    setPdfMergerState((prev) => ({ ...prev, IsMergeComplete: true }));
+  }
+
+  async function downloadFile(): Promise<void> {}
+
+  function refreshApp(): void {
+    dispatch(refreshCoreState());
+    setPdfMergerState(initialPdfMergerState);
   }
 
   if (!loading && !pdfMergerState.IsMergeInitiated && !pdfMergerState.IsMergeComplete) {
@@ -116,9 +125,7 @@ export default function PDFMerger(): ReactElement {
                 {pdfMergerState.UploadedFiles.length <= 1 ? (
                   <div>
                     <p className="px-10">{pdfCoreState.UploadErrorMessage}</p>
-                    {pdfCoreState.UploadErrorMessage.length > 0 && (
-                      <p className="mt-3 text-[3rem] max-sm:text-[2.2rem]">😕</p>
-                    )}
+                    {pdfCoreState.UploadErrorMessage.length > 0 && <p className="mt-3 text-5xl max-sm:text-[2.2rem]">😕</p>}
                   </div>
                 ) : (
                   <div>
@@ -186,7 +193,35 @@ export default function PDFMerger(): ReactElement {
   }
 
   if (!loading && pdfMergerState.IsMergeComplete) {
-    return <></>;
+    return (
+      <>
+        <main className="h-full flex flex-col justify-center items-center">
+          <div className="h-[8rem] flex flex-col justify-center items-center text-center mt-14 max-sm:mt-5 mx-12 text-6xl max-sm:text-[2.5rem] font-sans">
+            PDF Merger
+          </div>
+          <div className="h-[12rem] px-10 flex flex-col justify-center items-center text-center mb-8 mt-5 max-sm:-mt-11 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
+            <div className="mb-5 max-sm:mb-4">Successfully Merged {pdfMergerState.UploadedFiles.length} PDF files. ✅</div>
+            <div className="text-5xl max-sm:text-[2.2rem]">🎉 🎊</div>
+          </div>
+          <div className="h-[6rem] max-sm:h-[5rem]">
+            <button
+              className="text-3xl max-sm:text-2xl rounded-lg bg-green-900 hover:bg-green-950 hover:ring hover:ring-green-700 text-gray-200 p-2 h-[4.5rem] w-56 max-sm:h-16 max-sm:w-44"
+              onClick={downloadFile}
+            >
+              <i className="fa-solid fa-download mr-3"></i>Download
+            </button>
+          </div>
+          <div className="h-[6rem]">
+            <button
+              className="text-3xl max-sm:text-2xl rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-[4.5rem] w-56 max-sm:h-16 max-sm:w-44"
+              onClick={refreshApp}
+            >
+              <i className="fa-solid fa-arrow-rotate-right mr-3"></i>Re-Do
+            </button>
+          </div>
+        </main>
+      </>
+    );
   }
 
   return <></>;
