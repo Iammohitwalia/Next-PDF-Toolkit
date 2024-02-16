@@ -1,3 +1,3 @@
-export async function sleep(time: number): Promise<void> {
+export async function delay(time: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, time));
 }

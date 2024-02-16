@@ -2,8 +2,8 @@
 
 import FilePicker from "@/components/shared/file-picker";
 import { CircularSpinner, CircularSpinnerLarge } from "@/components/shared/spinners";
-import { sleep } from "@/components/utils/utils";
-import { ReactElement, useEffect, useState } from "react";
+import { delay } from "@/components/utils/utils";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 import { ProcessedFile } from "@/components/models/processed-file";
 import { useAppDispatch, useAppSelector, useAppStore } from "@/lib/redux-hooks";
 import {
@@ -13,7 +13,7 @@ import {
   setSubmitMessage,
   setUploadErrorMessage,
   setUploadMessage
-} from "@/lib/features/pdf-core/pdf-core-slice";
+} from "@/lib/redux-features/pdf-core/pdf-core-slice";
 import { PdfMergerState, initialPdfMergerState } from "@/components/pdf-merger/pdf-merger";
 
 export default function PDFMerger(): ReactElement {
@@ -24,15 +24,23 @@ export default function PDFMerger(): ReactElement {
   const [loading, setLoading] = useState<boolean>(true);
   const [pdfMergerState, setPdfMergerState] = useState<PdfMergerState>(initialPdfMergerState);
 
-  useEffect(() => {
+  function refreshApp(): void {
     dispatch(refreshCoreState());
     setPdfMergerState(initialPdfMergerState);
+  }
+  /* 
+    refreshAppCached() is a useCallback() or Cached version of refreshApp() 
+    specifically made to be used within the useEffect() hook.
+   */
+  const refreshAppCached = useCallback(refreshApp, [dispatch]);
+
+  useEffect(() => {
+    refreshAppCached();
     setLoading(false);
-  }, [dispatch]);
+  }, [refreshAppCached]);
 
   async function uploadFilesInitializer(files: FileList | null): Promise<void> {
-    dispatch(refreshCoreState());
-    setPdfMergerState(initialPdfMergerState);
+    refreshApp();
     dispatch(setIsUploadInitiated(true));
 
     let processedFiles: ProcessedFile[] = [];
@@ -44,7 +52,7 @@ export default function PDFMerger(): ReactElement {
         }
       }
     }
-    await sleep(1500);
+    await delay(1500);
 
     setPdfMergerState((prev) => ({ ...prev, UploadedFiles: processedFiles }));
     if (processedFiles.length > 1) {
@@ -88,16 +96,11 @@ export default function PDFMerger(): ReactElement {
     let submitMessage: string = `Merging ${pdfMergerState.UploadedFiles.length} PDF files... ⏳`;
     dispatch(setSubmitMessage(submitMessage));
     setPdfMergerState((prev) => ({ ...prev, IsMergeInitiated: true }));
-    await sleep(1500);
+    await delay(1500);
     setPdfMergerState((prev) => ({ ...prev, IsMergeComplete: true }));
   }
 
   async function downloadFile(): Promise<void> {}
-
-  function refreshApp(): void {
-    dispatch(refreshCoreState());
-    setPdfMergerState(initialPdfMergerState);
-  }
 
   if (!loading && !pdfMergerState.IsMergeInitiated && !pdfMergerState.IsMergeComplete) {
     return (

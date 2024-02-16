@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import pdfCoreReducer from "@/lib/features/pdf-core/pdf-core-slice";
+import pdfCoreReducer from "@/lib/redux-features/pdf-core/pdf-core-slice";
 
 export const makeStore = () => {
   return configureStore({
