@@ -88,7 +88,7 @@ export default function PDFMerger(): ReactElement {
     let submitMessage: string = `Merging ${pdfMergerState.UploadedFiles.length} PDF files... ⏳`;
     dispatch(setSubmitMessage(submitMessage));
     setPdfMergerState((prev) => ({ ...prev, IsMergeInitiated: true }));
-    // await sleep(1500);
+    await sleep(1500);
     setPdfMergerState((prev) => ({ ...prev, IsMergeComplete: true }));
   }
 
