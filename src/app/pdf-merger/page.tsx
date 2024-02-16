@@ -178,7 +178,7 @@ export default function PDFMerger(): ReactElement {
                       <tbody>
                         {pdfMergerState.UploadedFiles.map((file: ProcessedFile) => (
                           <tr key={file.Id}>
-                            <td className="pb-[0.8rem] max-sm:pb-[0.65rem] text-center pr-1">{"●"}</td>
+                            <td className="pb-[0.8rem] max-sm:pb-[0.65rem] text-center pr-1">{"•"}</td>
                             <td className="pb-[0.8rem] max-sm:pb-[0.65rem] pr-3 max-sm:pr-2">{file.Content!.name}</td>
                             <td className="max-sm:w-1/4 pb-[0.8rem] max-sm:pb-[0.65rem] text-center">
                               {pdfMergerState.UploadedFiles.indexOf(file) > 0 && (
