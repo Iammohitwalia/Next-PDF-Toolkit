@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { initialPdfCoreState, PdfCoreState } from "@/components/pdf-core/pdf-core";
+import { initialPdfCoreState } from "@/components/pdf-core/pdf-core";
 
 export const pdfCoreSlice = createSlice({
   name: "pdfCore",
