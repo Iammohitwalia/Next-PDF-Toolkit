@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector, useAppStore } from "@/lib/redux-hooks";
 import {
   refreshCoreState,
   setIsUploadComplete,
+  setIsUploadFailed,
   setIsUploadInitiated,
   setSubmitMessage,
   setUploadErrorMessage,
@@ -17,12 +18,11 @@ import {
 import { PdfMergerState, initialPdfMergerState } from "@/components/pdf-merger/pdf-merger";
 
 export default function PDFMerger(): ReactElement {
-  const store = useAppStore();
   const dispatch = useAppDispatch();
   const pdfCoreState = useAppSelector((state) => state.pdfCore);
 
-  const [loading, setLoading] = useState<boolean>(true);
   const [pdfMergerState, setPdfMergerState] = useState<PdfMergerState>(initialPdfMergerState);
+  const [loading, setLoading] = useState<boolean>(true);
 
   function refreshApp(): void {
     dispatch(refreshCoreState());
@@ -40,27 +40,57 @@ export default function PDFMerger(): ReactElement {
   }, [refreshAppCached]);
 
   async function uploadFilesInitializer(files: FileList | null): Promise<void> {
-    refreshApp();
-    dispatch(setIsUploadInitiated(true));
-
-    let processedFiles: ProcessedFile[] = [];
     if (files !== null) {
+      if (files.length === 0) {
+        return;
+      }
+
+      refreshApp();
+      dispatch(setUploadMessage("Uploading your PDF file(s)... ⏳"));
+      dispatch(setIsUploadInitiated(true));
+
+      await delay(1500);
+
+      let processedFiles: ProcessedFile[] = [];
+
+      if (files.length > pdfMergerState.MaxFilesAllowed) {
+        handleFailedUpload(`Max ${pdfMergerState.MaxFilesAllowed} PDF files allowed!`);
+        return;
+      }
+
       for (let i: number = 0; i < files.length; i++) {
         if (files.item(i) !== null) {
-          let newFile: File = files.item(i) as File;
+          let newFile: File = files.item(i)!;
+
+          if (newFile.size > pdfMergerState.MaxSizeAllowed) {
+            handleFailedUpload("Max 20 MB size allowed for each file!");
+            return;
+          }
+          if (newFile.type !== pdfMergerState.FileTypeAllowed) {
+            handleFailedUpload("You can only upload PDF files!");
+            return;
+          }
           processedFiles = processedFiles.concat({ Id: i + 1, Content: newFile });
         }
       }
-    }
-    await delay(1500);
 
-    setPdfMergerState((prev) => ({ ...prev, UploadedFiles: processedFiles }));
-    if (processedFiles.length > 1) {
-      dispatch(setUploadMessage(`${processedFiles.length} PDF files uploaded. ✅`));
-    } else {
-      dispatch(setUploadErrorMessage("Just 1 PDF file uploaded, which is not enough! You have to upload at least 2 files."));
+      setPdfMergerState((prev) => ({ ...prev, UploadedFiles: processedFiles }));
+      if (processedFiles.length > 1) {
+        dispatch(setUploadMessage(`${processedFiles.length} PDF files uploaded. ✅`));
+      } else {
+        dispatch(
+          setUploadErrorMessage("Just 1 PDF file uploaded, which is not enough! You have to upload at least 2 files.")
+        );
+      }
+      dispatch(setIsUploadComplete(true));
     }
-    dispatch(setIsUploadComplete(true));
+  }
+
+  function handleFailedUpload(uploadErrorMessage: string): void {
+    dispatch(setIsUploadInitiated(false));
+    dispatch(setIsUploadFailed(true));
+    dispatch(setUploadMessage("Upload failed! ❌"));
+    dispatch(setUploadErrorMessage(uploadErrorMessage));
   }
 
   function moveFileUp(file: ProcessedFile): void {
@@ -117,9 +147,18 @@ export default function PDFMerger(): ReactElement {
           {pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && (
             <div>
               <div className="flex justify-center items-center text-center mt-11 mb-8 max-sm:mt-9 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
-                Uploading your file(s)... ⏳
+                <p className="px-10">{pdfCoreState.UploadMessage}</p>
               </div>
               <CircularSpinner />
+            </div>
+          )}
+          {pdfCoreState.IsUploadFailed && (
+            <div>
+              <div className="flex flex-col justify-center items-center text-center mt-11 mb-8 max-sm:mt-9 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
+                <p className="px-10">{pdfCoreState.UploadMessage}</p>
+                <p className="mt-7 px-10">{pdfCoreState.UploadErrorMessage}</p>
+                <p className="mt-3 text-5xl max-sm:text-[2.2rem]">😕</p>
+              </div>
             </div>
           )}
           {pdfCoreState.IsUploadComplete && (

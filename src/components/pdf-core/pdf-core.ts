@@ -1,6 +1,7 @@
 interface PdfCoreState {
   IsUploadComplete: boolean;
   IsUploadInitiated: boolean;
+  IsUploadFailed: boolean;
   UploadMessage: string;
   UploadErrorMessage: string;
   SubmitMessage: string;
@@ -12,6 +13,7 @@ interface PdfCoreState {
 const initialPdfCoreState: PdfCoreState = {
   IsUploadComplete: false,
   IsUploadInitiated: false,
+  IsUploadFailed: false,
   UploadMessage: "",
   UploadErrorMessage: "",
   SubmitMessage: "",

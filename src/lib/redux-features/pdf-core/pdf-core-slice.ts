@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { initialPdfCoreState } from "@/components/pdf-core/pdf-core";
+import { initialPdfCoreState, PdfCoreState } from "@/components/pdf-core/pdf-core";
 
 export const pdfCoreSlice = createSlice({
   name: "pdfCore",
@@ -11,6 +11,10 @@ export const pdfCoreSlice = createSlice({
 
     setIsUploadInitiated: (state, action: PayloadAction<boolean>) => {
       state.IsUploadInitiated = action.payload;
+    },
+
+    setIsUploadFailed: (state, action: PayloadAction<boolean>) => {
+      state.IsUploadFailed = action.payload;
     },
 
     setUploadMessage: (state, action: PayloadAction<string>) => {
@@ -28,6 +32,7 @@ export const pdfCoreSlice = createSlice({
     refreshCoreState: (state) => {
       state.IsUploadComplete = false;
       state.IsUploadInitiated = false;
+      state.IsUploadFailed = false;
       state.UploadMessage = "";
       state.UploadErrorMessage = "";
       state.SubmitMessage = "";
@@ -40,6 +45,7 @@ export const pdfCoreSlice = createSlice({
 export const {
   setIsUploadComplete,
   setIsUploadInitiated,
+  setIsUploadFailed,
   setUploadMessage,
   setUploadErrorMessage,
   setSubmitMessage,
