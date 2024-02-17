@@ -15,7 +15,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Next PDF Toolkit",
+  title: "PDF Toolkit",
   description: "Tools that help you manage and manipulate PDF files.",
   icons: {
     shortcut: "/favicon.ico",
@@ -30,18 +30,18 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   twitter: {
-    card: "summary_large_image",
+    card: "app",
     site: "https://next-pdftoolkit.subhamk.com",
-    title: "Next PDF Toolkit",
+    title: "PDF Toolkit",
     description: "Tools that help you manage and manipulate PDF files.",
     images: [{ url: "https://next-pdftoolkit.subhamk.com/android-chrome-192x192.png" }],
-    creator: "SubhamK108"
+    creator: "@SubhamK108"
   },
   openGraph: {
     type: "website",
-    title: "Next PDF Toolkit",
+    title: "PDF Toolkit",
     description: "Tools that help you manage and manipulate PDF files.",
-    siteName: "Next PDF Toolkit",
+    siteName: "PDF Toolkit",
     url: "https://next-pdftoolkit.subhamk.com",
     images: [{ url: "https://next-pdftoolkit.subhamk.com/android-chrome-192x192.png" }]
   }
