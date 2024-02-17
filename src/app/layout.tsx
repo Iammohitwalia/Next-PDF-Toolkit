@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   twitter: {
-    card: "app",
+    card: "summary",
     site: "https://next-pdftoolkit.subhamk.com",
     title: "PDF Toolkit",
     description: "Tools that help you manage and manipulate PDF files.",
