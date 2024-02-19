@@ -21,7 +21,7 @@ export default function FilePicker(props: FilePickerProps): ReactElement {
           accept={props.FileType}
           onChange={(e) => props.UploadFiles(e.target.files)}
         />
-        Drag & Drop Files OR Click To Upload
+        Drag & Drop OR Click To Upload
       </div>
     </>
   );

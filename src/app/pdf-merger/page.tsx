@@ -17,7 +17,7 @@ import {
 } from "@/lib/redux-features/pdf-core/pdf-core-slice";
 import { PdfMergerState, initialPdfMergerState } from "@/components/pdf-merger/pdf-merger";
 
-export default function PDFMerger(): ReactElement {
+export default function PdfMerger(): ReactElement {
   const dispatch = useAppDispatch();
   const pdfCoreState = useAppSelector((state) => state.pdfCore);
 
@@ -74,8 +74,8 @@ export default function PDFMerger(): ReactElement {
         }
       }
 
-      setPdfMergerState((prev) => ({ ...prev, UploadedFiles: processedFiles }));
       if (processedFiles.length > 1) {
+        setPdfMergerState((prev) => ({ ...prev, UploadedFiles: processedFiles }));
         dispatch(setUploadMessage(`${processedFiles.length} PDF files uploaded. ✅`));
       } else {
         dispatch(
@@ -87,10 +87,10 @@ export default function PDFMerger(): ReactElement {
   }
 
   function handleFailedUpload(uploadErrorMessage: string): void {
-    dispatch(setIsUploadInitiated(false));
-    dispatch(setIsUploadFailed(true));
     dispatch(setUploadMessage("Upload failed! ❌"));
     dispatch(setUploadErrorMessage(uploadErrorMessage));
+    dispatch(setIsUploadInitiated(false));
+    dispatch(setIsUploadFailed(true));
   }
 
   function moveFileUp(file: ProcessedFile): void {
@@ -174,13 +174,15 @@ export default function PDFMerger(): ReactElement {
                     <div className="mb-8 max-sm:mb-7">
                       <p className="px-10">{pdfCoreState.UploadMessage}</p>
                     </div>
-                    <table className="flex justify-center items-center text-left table-fixed border-collapse mx-14 mb-8 max-sm:mb-7 text-[1.1rem]">
+                    <table className="table-fixed border-collapse mx-auto mb-8 max-sm:mb-7 text-[1.2rem] max-sm:text-[1.1rem]">
                       <tbody>
                         {pdfMergerState.UploadedFiles.map((file: ProcessedFile) => (
                           <tr key={file.Id}>
                             <td className="pb-[0.8rem] max-sm:pb-[0.65rem] text-center pr-1">{"•"}</td>
-                            <td className="pb-[0.8rem] max-sm:pb-[0.65rem] pr-3 max-sm:pr-2">{file.Content!.name}</td>
-                            <td className="max-sm:w-1/4 pb-[0.8rem] max-sm:pb-[0.65rem] text-center">
+                            <td className="pb-[0.8rem] max-sm:pb-[0.65rem] pr-3 max-sm:pr-2 text-left">
+                              {file.Content!.name}
+                            </td>
+                            <td className="pb-[0.8rem] max-sm:pb-[0.65rem] text-center">
                               {pdfMergerState.UploadedFiles.indexOf(file) > 0 && (
                                 <span
                                   className="px-2 hover:text-white cursor-pointer fa-solid fa-arrow-up"
