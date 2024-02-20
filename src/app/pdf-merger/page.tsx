@@ -82,6 +82,7 @@ export default function PdfMerger(): ReactElement {
           setUploadErrorMessage("Just 1 PDF file uploaded, which is not enough! You have to upload at least 2 files.")
         );
       }
+      dispatch(setIsUploadInitiated(false));
       dispatch(setIsUploadComplete(true));
     }
   }
@@ -132,40 +133,44 @@ export default function PdfMerger(): ReactElement {
 
   async function downloadFile(): Promise<void> {}
 
-  if (!loading && !pdfMergerState.IsMergeInitiated && !pdfMergerState.IsMergeComplete) {
+  if (!loading && !pdfCoreState.IsUploadInitiated && !pdfMergerState.IsMergeInitiated && !pdfMergerState.IsMergeComplete) {
     return (
       <>
         <main className="h-full flex flex-col justify-center items-center">
           <div className="h-[8rem] flex flex-col justify-center items-center text-center mt-14 max-sm:mt-5 mx-12 text-6xl max-sm:text-[2.5rem] font-sans">
             PDF Merger
           </div>
-          <div className="h-[6rem] flex flex-col justify-center items-center mt-14 max-sm:-mt-6 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
-            <div>Upload your PDF files</div>
-            <div className="mt-4 max-sm:mt-3 text-xl max-sm:text-[1.2rem]">Limit - 20 Files / 20 MB Each</div>
-          </div>
-          <FilePicker IsMultiple={true} FileType="application/pdf" UploadFiles={uploadFilesInitializer} />
-          {pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && (
+          {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
             <div>
-              <div className="flex justify-center items-center text-center mt-11 mb-8 max-sm:mt-9 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
-                <p className="px-10">{pdfCoreState.UploadMessage}</p>
+              <div className="h-[6rem] flex flex-col justify-center items-center mt-14 max-sm:-mt-6 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
+                <div>Upload your PDF files</div>
+                <div className="mt-4 max-sm:mt-3 text-xl max-sm:text-[1.2rem]">Limit - 20 Files / 20 MB Each</div>
               </div>
-              <CircularSpinner />
+              <FilePicker IsMultiple={true} FileType="application/pdf" UploadFiles={uploadFilesInitializer} />
             </div>
           )}
           {pdfCoreState.IsUploadFailed && (
-            <div>
-              <div className="flex flex-col justify-center items-center text-center mt-11 mb-8 max-sm:mt-9 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
+            <div className="flex flex-col justify-center items-center text-center mt-16 mb-8 max-sm:-mt-4 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
+              <div className="mb-14 max-sm:mb-11">
                 <p className="px-10">{pdfCoreState.UploadMessage}</p>
                 <p className="mt-7 px-10">{pdfCoreState.UploadErrorMessage}</p>
                 <p className="mt-3 text-5xl max-sm:text-[2.2rem]">😕</p>
               </div>
+              <div className="h-[6rem]">
+                <button
+                  className="text-3xl max-sm:text-2xl rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
+                  onClick={refreshApp}
+                >
+                  <i className="fa-solid fa-arrow-rotate-right mr-3"></i>Re-Do
+                </button>
+              </div>
             </div>
           )}
           {pdfCoreState.IsUploadComplete && (
-            <div>
-              <div className="flex justify-center items-center text-center mt-11 mb-8 max-sm:mt-9 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
+            <div className="flex flex-col justify-center items-center text-center mt-16 mb-8 max-sm:-mt-4 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
+              <div>
                 {pdfMergerState.UploadedFiles.length <= 1 ? (
-                  <div>
+                  <div className="mb-14 max-sm:mb-11">
                     <p className="px-10">{pdfCoreState.UploadErrorMessage}</p>
                     {pdfCoreState.UploadErrorMessage.length > 0 && <p className="mt-3 text-5xl max-sm:text-[2.2rem]">😕</p>}
                   </div>
@@ -207,17 +212,40 @@ export default function PdfMerger(): ReactElement {
                         ))}
                       </tbody>
                     </table>
-                    <button
-                      className="text-3xl max-sm:text-2xl rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
-                      onClick={submitFiles}
-                    >
-                      <i className="fa-solid fa-circle-check mr-3"></i>Submit
-                    </button>
+                    <div className="h-[6rem] max-sm:h-[5rem]">
+                      <button
+                        className="text-3xl max-sm:text-2xl rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
+                        onClick={submitFiles}
+                      >
+                        <i className="fa-solid fa-circle-check mr-3"></i>Submit
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
+              <div className="h-[6rem]">
+                <button
+                  className="text-3xl max-sm:text-2xl rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
+                  onClick={refreshApp}
+                >
+                  <i className="fa-solid fa-arrow-rotate-right mr-3"></i>Re-Do
+                </button>
+              </div>
             </div>
           )}
+        </main>
+      </>
+    );
+  }
+
+  if (pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
+    return (
+      <>
+        <main className="h-screen flex flex-col justify-center items-center text-center">
+          <div className="mb-8 max-sm:mb-5 mx-12 text-4xl max-sm:text-[1.8rem] font-sans leading-[3.5rem]">
+            {pdfCoreState.UploadMessage}
+          </div>
+          {pdfCoreState.UploadMessage.length > 0 && <CircularSpinnerLarge />}
         </main>
       </>
     );
