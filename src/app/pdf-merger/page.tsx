@@ -152,8 +152,8 @@ export default function PdfMerger(): ReactElement {
           {pdfCoreState.IsUploadFailed && (
             <div className="flex flex-col justify-center items-center text-center mt-16 mb-8 max-sm:-mt-4 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
               <div className="mb-14 max-sm:mb-11">
-                <p className="px-10">{pdfCoreState.UploadMessage}</p>
-                <p className="mt-7 px-10">{pdfCoreState.UploadErrorMessage}</p>
+                <p className="px-6">{pdfCoreState.UploadMessage}</p>
+                <p className="mt-7 px-6">{pdfCoreState.UploadErrorMessage}</p>
                 <p className="mt-3 text-5xl max-sm:text-[2.2rem]">😕</p>
               </div>
               <div className="h-[6rem]">
@@ -171,13 +171,13 @@ export default function PdfMerger(): ReactElement {
               <div>
                 {pdfMergerState.UploadedFiles.length <= 1 ? (
                   <div className="mb-14 max-sm:mb-11">
-                    <p className="px-10">{pdfCoreState.UploadErrorMessage}</p>
+                    <p className="px-6">{pdfCoreState.UploadErrorMessage}</p>
                     {pdfCoreState.UploadErrorMessage.length > 0 && <p className="mt-3 text-5xl max-sm:text-[2.2rem]">😕</p>}
                   </div>
                 ) : (
                   <div>
                     <div className="mb-8 max-sm:mb-7">
-                      <p className="px-10">{pdfCoreState.UploadMessage}</p>
+                      <p className="px-6">{pdfCoreState.UploadMessage}</p>
                     </div>
                     <table className="table-fixed border-collapse mx-auto mb-8 max-sm:mb-7 text-[1.2rem] max-sm:text-[1.1rem]">
                       <tbody>
@@ -271,7 +271,7 @@ export default function PdfMerger(): ReactElement {
           <div className="h-[8rem] flex flex-col justify-center items-center text-center mt-14 max-sm:mt-5 mx-12 text-6xl max-sm:text-[2.5rem] font-sans">
             PDF Merger
           </div>
-          <div className="h-[12rem] px-10 flex flex-col justify-center items-center text-center mb-8 mt-5 max-sm:-mt-11 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
+          <div className="h-[12rem] px-6 flex flex-col justify-center items-center text-center mb-8 mt-5 max-sm:-mt-11 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
             <div className="mb-5 max-sm:mb-4">Successfully Merged {pdfMergerState.UploadedFiles.length} PDF files. ✅</div>
             <div className="text-5xl max-sm:text-[2.2rem]">🎉 🎊</div>
           </div>
