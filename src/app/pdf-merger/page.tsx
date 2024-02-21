@@ -214,10 +214,10 @@ export default function PdfMerger(): ReactElement {
                     </table>
                     <div className="h-[6rem] max-sm:h-[5rem]">
                       <button
-                        className="text-3xl max-sm:text-2xl rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
+                        className="text-3xl max-sm:text-2xl rounded-lg bg-green-900 hover:bg-green-950 hover:ring hover:ring-green-700 text-gray-200 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
                         onClick={submitFiles}
                       >
-                        <i className="fa-solid fa-circle-check mr-3"></i>Submit
+                        <i className="fa-solid fa-circle-check mr-3"></i>Merge
                       </button>
                     </div>
                   </div>
