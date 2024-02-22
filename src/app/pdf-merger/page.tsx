@@ -49,7 +49,7 @@ export default function PdfMerger(): ReactElement {
       dispatch(setUploadMessage("Uploading your PDF file(s)... ⏳"));
       dispatch(setIsUploadInitiated(true));
 
-      await delay(1500);
+      await delay(1000);
 
       let processedFiles: ProcessedFile[] = [];
 
