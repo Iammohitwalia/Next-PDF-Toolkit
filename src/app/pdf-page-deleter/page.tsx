@@ -1,7 +1,7 @@
 "use client";
 
 import FilePicker from "@/components/shared/file-picker";
-import { CircularSpinner, CircularSpinnerLarge, CircularSpinnerSmall } from "@/components/shared/spinners";
+import { CircularSpinnerLarge, CircularSpinnerSmall } from "@/components/shared/spinners";
 import { delay } from "@/components/utils/utils";
 import { ReactElement, useCallback, useEffect, useState } from "react";
 import { ProcessedFile } from "@/components/models/processed-file";
@@ -15,18 +15,20 @@ import {
   setUploadErrorMessage,
   setUploadMessage
 } from "@/lib/redux-features/pdf-core/pdf-core-slice";
-import { PdfPageDelState, initialPdfPageDelState } from "@/components/pdf-page-deleter/pdf-page-deleter";
+import { PdfPageDeleterState, initialPdfPageDeleterState } from "@/components/pdf-page-deleter/pdf-page-deleter";
+import { PageDeleterValidatorResult, validatePagesToDelete } from "@/components/pdf-page-deleter/page-deleter-validator";
 
 export default function PdfPageDeleter(): ReactElement {
   const dispatch = useAppDispatch();
   const pdfCoreState = useAppSelector((state) => state.pdfCore);
 
-  const [pdfPageDelState, setPdfPageDelState] = useState<PdfPageDelState>(initialPdfPageDelState);
+  const [pdfPageDelState, setPdfPageDelState] = useState<PdfPageDeleterState>(initialPdfPageDeleterState);
   const [loading, setLoading] = useState<boolean>(true);
+  const [validatorTimer, setValidatorTimer] = useState<NodeJS.Timeout>();
 
   function refreshApp(): void {
     dispatch(refreshCoreState());
-    setPdfPageDelState(initialPdfPageDelState);
+    setPdfPageDelState(initialPdfPageDeleterState);
   }
   /* 
     refreshAppCached() is a useCallback() or Cached version of refreshApp() 
@@ -49,7 +51,7 @@ export default function PdfPageDeleter(): ReactElement {
       dispatch(setUploadMessage("Uploading your PDF file... ⏳"));
       dispatch(setIsUploadInitiated(true));
 
-      await delay(1500);
+      await delay(1000);
 
       if (files.item(0) !== null) {
         let processedFile: ProcessedFile = { Id: 1, Content: files.item(0)! };
@@ -94,39 +96,37 @@ export default function PdfPageDeleter(): ReactElement {
     setPdfPageDelState((prev) => ({ ...prev, UploadedFile: null, TotalPages: 0 }));
   }
 
-  async function validatePagesToDelete(pagesToDelete: string): Promise<void> {
+  function validatePageDeleter(pagesToDelete: string): void {
+    let validatorResult: PageDeleterValidatorResult = validatePagesToDelete(pagesToDelete, pdfPageDelState.TotalPages);
+
+    setPdfPageDelState((prev) => ({
+      ...prev,
+      TotalPagesToDelete: validatorResult[1],
+      PagesToDeleteInfo: validatorResult[2],
+      PagesToDeleteValidator: validatorResult[0]
+    }));
+  }
+
+  function startPageDeleterValidator(pagesToDelete: string): void {
+    if (validatorTimer !== undefined) {
+      clearTimeout(validatorTimer);
+    }
     if (pagesToDelete === "") {
       setPdfPageDelState((prev) => ({
         ...prev,
         PagesToDelete: "",
         TotalPagesToDelete: 0,
-        PagesToDeleteInfo: initialPdfPageDelState.PagesToDeleteInfo,
-        PagesToDeleteValidator: "invalid"
+        PagesToDeleteInfo: initialPdfPageDeleterState.PagesToDeleteInfo,
+        PagesToDeleteValidator: "EMPTY"
       }));
     } else {
       setPdfPageDelState((prev) => ({
         ...prev,
         PagesToDelete: pagesToDelete,
-        PagesToDeleteValidator: "checking"
+        PagesToDeleteValidator: "CHECKING"
       }));
-
-      await delay(1500);
-
-      let totalPagesToDelete: number = 0;
-      totalPagesToDelete = pagesToDelete.length;
-      /* 
-      Calculate the total number of pages to delete here.
-      */
-
-      let deletingInfo: string =
-        totalPagesToDelete === 1 ? "1 page will be deleted." : `${totalPagesToDelete} pages will be deleted.`;
-
-      setPdfPageDelState((prev) => ({
-        ...prev,
-        TotalPagesToDelete: totalPagesToDelete,
-        PagesToDeleteInfo: deletingInfo,
-        PagesToDeleteValidator: "valid"
-      }));
+      const timeOutId: NodeJS.Timeout = setTimeout(() => validatePageDeleter(pagesToDelete), 350);
+      setValidatorTimer(timeOutId);
     }
   }
 
@@ -204,19 +204,17 @@ export default function PdfPageDeleter(): ReactElement {
                     </tr>
                   </tbody>
                 </table>
-                <div className="mb-12 max-sm:mb-10 text-[1.5rem] max-sm:text-[1.25rem]">
-                  <p className="px-6 mb-4">Enter the page no. or a range of page nos. to delete:</p>
+                <div className="h-[9.5rem] mb-12 max-sm:mb-10 text-[1.5rem] max-sm:text-[1.25rem]">
+                  <p className="px-6 mb-4">{"Enter the page(s) to delete:"}</p>
                   <input
                     className="mb-4 border border-[#AEAEAE] rounded-lg font-[monospace] h-auto w-32 max-sm:w-28 mx-auto text-center"
                     type="text"
                     value={pdfPageDelState.PagesToDelete}
-                    onInput={(e) => validatePagesToDelete(e.currentTarget.value)}
+                    onInput={(e) => startPageDeleterValidator(e.currentTarget.value)}
                     placeholder="Page No."
                   />
-                  {pdfPageDelState.PagesToDeleteValidator === "checking" ? (
-                    <div className="h-[1.75rem] max-sm:h-[1.35rem]">
-                      <CircularSpinnerSmall />
-                    </div>
+                  {pdfPageDelState.PagesToDeleteValidator === "CHECKING" ? (
+                    <CircularSpinnerSmall />
                   ) : (
                     <p className="px-6">{pdfPageDelState.PagesToDeleteInfo}</p>
                   )}
@@ -225,7 +223,7 @@ export default function PdfPageDeleter(): ReactElement {
                   <button
                     className="text-3xl max-sm:text-2xl rounded-lg bg-green-900 hover:bg-green-950 disabled:bg-zinc-800 hover:ring hover:ring-green-700 disabled:ring-transparent text-gray-200 disabled:text-zinc-600 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
                     onClick={submitFile}
-                    disabled={pdfPageDelState.PagesToDeleteValidator === "valid" ? false : true}
+                    disabled={pdfPageDelState.PagesToDeleteValidator === "VALID" ? false : true}
                   >
                     <i className="fa-solid fa-circle-check mr-3"></i>Delete
                   </button>
@@ -283,7 +281,7 @@ export default function PdfPageDeleter(): ReactElement {
             <div className="mb-5 max-sm:mb-4">
               {pdfPageDelState.TotalPagesToDelete == 1
                 ? "Successfully Deleted 1 Page from the PDF File. ✅"
-                : `Successfully Deleted ${pdfPageDelState.TotalPagesToDelete} Page from the PDF File. ✅`}
+                : `Successfully Deleted ${pdfPageDelState.TotalPagesToDelete} Pages from the PDF File. ✅`}
             </div>
             <div className="text-5xl max-sm:text-[2.2rem]">🎉 🎊</div>
           </div>
