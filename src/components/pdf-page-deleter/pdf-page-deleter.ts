@@ -3,7 +3,9 @@ import { ProcessedFile } from "../models/processed-file";
 interface PdfPageDelState {
   UploadedFile: ProcessedFile | null;
   TotalPages: number;
-  PageNo: string;
+  PagesToDelete: string;
+  PagesToDeleteInfo: string;
+  PagesToDeleteValidator: "valid" | "invalid" | "checking" | "empty";
   TotalPagesToDelete: number;
   IsDeletionComplete: boolean;
   IsDeletionInitiated: boolean;
@@ -14,7 +16,9 @@ interface PdfPageDelState {
 const initialPdfPageDelState: PdfPageDelState = {
   UploadedFile: null,
   TotalPages: 0,
-  PageNo: "",
+  PagesToDelete: "",
+  PagesToDeleteInfo: "Enter the page no. (e.g. 4) or the range of page nos. (e.g. 4-7):",
+  PagesToDeleteValidator: "empty",
   TotalPagesToDelete: 0,
   IsDeletionComplete: false,
   IsDeletionInitiated: false,

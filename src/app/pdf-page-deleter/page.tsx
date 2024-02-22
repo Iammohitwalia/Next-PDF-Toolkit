@@ -1,7 +1,7 @@
 "use client";
 
 import FilePicker from "@/components/shared/file-picker";
-import { CircularSpinnerLarge } from "@/components/shared/spinners";
+import { CircularSpinner, CircularSpinnerLarge, CircularSpinnerSmall } from "@/components/shared/spinners";
 import { delay } from "@/components/utils/utils";
 import { ReactElement, useCallback, useEffect, useState } from "react";
 import { ProcessedFile } from "@/components/models/processed-file";
@@ -94,6 +94,42 @@ export default function PdfPageDeleter(): ReactElement {
     setPdfPageDelState((prev) => ({ ...prev, UploadedFile: null, TotalPages: 0 }));
   }
 
+  async function validatePagesToDelete(pagesToDelete: string): Promise<void> {
+    if (pagesToDelete === "") {
+      setPdfPageDelState((prev) => ({
+        ...prev,
+        PagesToDelete: "",
+        TotalPagesToDelete: 0,
+        PagesToDeleteInfo: initialPdfPageDelState.PagesToDeleteInfo,
+        PagesToDeleteValidator: "invalid"
+      }));
+    } else {
+      setPdfPageDelState((prev) => ({
+        ...prev,
+        PagesToDelete: pagesToDelete,
+        PagesToDeleteValidator: "checking"
+      }));
+
+      await delay(1500);
+
+      let totalPagesToDelete: number = 0;
+      totalPagesToDelete = pagesToDelete.length;
+      /* 
+      Calculate the total number of pages to delete here.
+      */
+
+      let deletingInfo: string =
+        totalPagesToDelete === 1 ? "1 page will be deleted." : `${totalPagesToDelete} pages will be deleted.`;
+
+      setPdfPageDelState((prev) => ({
+        ...prev,
+        TotalPagesToDelete: totalPagesToDelete,
+        PagesToDeleteInfo: deletingInfo,
+        PagesToDeleteValidator: "valid"
+      }));
+    }
+  }
+
   async function submitFile(): Promise<void> {
     let submitMessage: string = "";
     if (pdfPageDelState.TotalPagesToDelete == 1) {
@@ -169,17 +205,26 @@ export default function PdfPageDeleter(): ReactElement {
                   </tbody>
                 </table>
                 <div className="mb-12 max-sm:mb-10 text-[1.5rem] max-sm:text-[1.25rem]">
-                  <p className="px-6 mb-4">{"Enter the page no. (e.g. 4) or the range of page nos. (e.g. 4-7):"}</p>
+                  {pdfPageDelState.PagesToDeleteValidator === "checking" ? (
+                    <div className="h-[3.25rem] max-sm:h-[2.85rem]">
+                      <CircularSpinnerSmall />
+                    </div>
+                  ) : (
+                    <p className="px-6 mb-4">{pdfPageDelState.PagesToDeleteInfo}</p>
+                  )}
                   <input
                     className="border border-[#AEAEAE] rounded-lg font-[monospace] h-auto w-32 max-sm:w-28 mx-auto text-center"
                     type="text"
+                    value={pdfPageDelState.PagesToDelete}
+                    onInput={(e) => validatePagesToDelete(e.currentTarget.value)}
                     placeholder="Page No."
                   />
                 </div>
                 <div className="h-[6rem] max-sm:h-[5rem]">
                   <button
-                    className="text-3xl max-sm:text-2xl rounded-lg bg-green-900 hover:bg-green-950 hover:ring hover:ring-green-700 text-gray-200 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
+                    className="text-3xl max-sm:text-2xl rounded-lg bg-green-900 hover:bg-green-950 disabled:bg-zinc-800 hover:ring hover:ring-green-700 disabled:ring-transparent text-gray-200 disabled:text-zinc-600 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
                     onClick={submitFile}
+                    disabled={pdfPageDelState.PagesToDeleteValidator === "valid" ? false : true}
                   >
                     <i className="fa-solid fa-circle-check mr-3"></i>Delete
                   </button>
