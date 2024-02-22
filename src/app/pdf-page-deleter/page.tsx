@@ -205,20 +205,21 @@ export default function PdfPageDeleter(): ReactElement {
                   </tbody>
                 </table>
                 <div className="mb-12 max-sm:mb-10 text-[1.5rem] max-sm:text-[1.25rem]">
-                  {pdfPageDelState.PagesToDeleteValidator === "checking" ? (
-                    <div className="h-[3.25rem] max-sm:h-[2.85rem]">
-                      <CircularSpinnerSmall />
-                    </div>
-                  ) : (
-                    <p className="px-6 mb-4">{pdfPageDelState.PagesToDeleteInfo}</p>
-                  )}
+                  <p className="px-6 mb-4">Enter the page no. or a range of page nos. to delete:</p>
                   <input
-                    className="border border-[#AEAEAE] rounded-lg font-[monospace] h-auto w-32 max-sm:w-28 mx-auto text-center"
+                    className="mb-4 border border-[#AEAEAE] rounded-lg font-[monospace] h-auto w-32 max-sm:w-28 mx-auto text-center"
                     type="text"
                     value={pdfPageDelState.PagesToDelete}
                     onInput={(e) => validatePagesToDelete(e.currentTarget.value)}
                     placeholder="Page No."
                   />
+                  {pdfPageDelState.PagesToDeleteValidator === "checking" ? (
+                    <div className="h-[1.75rem] max-sm:h-[1.35rem]">
+                      <CircularSpinnerSmall />
+                    </div>
+                  ) : (
+                    <p className="px-6">{pdfPageDelState.PagesToDeleteInfo}</p>
+                  )}
                 </div>
                 <div className="h-[6rem] max-sm:h-[5rem]">
                   <button

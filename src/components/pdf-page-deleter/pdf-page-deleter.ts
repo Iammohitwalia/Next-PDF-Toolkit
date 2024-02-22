@@ -17,7 +17,7 @@ const initialPdfPageDelState: PdfPageDelState = {
   UploadedFile: null,
   TotalPages: 0,
   PagesToDelete: "",
-  PagesToDeleteInfo: "Enter the page no. (e.g. 4) or the range of page nos. (e.g. 4-7):",
+  PagesToDeleteInfo: "(Examples: 2, 1-2, 5-9, etc.)",
   PagesToDeleteValidator: "empty",
   TotalPagesToDelete: 0,
   IsDeletionComplete: false,
