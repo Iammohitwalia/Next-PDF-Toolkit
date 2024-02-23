@@ -16,6 +16,11 @@ import {
   setUploadMessage
 } from "@/lib/redux-features/pdf-core/pdf-core-slice";
 import { PdfMergerState, initialPdfMergerState } from "@/components/pdf-merger/pdf-merger";
+import UploadContainer from "@/components/shared/upload-container";
+import UploadFailedContainer from "@/components/shared/upload-failed-container";
+import UploadStateContainer from "@/components/shared/upload-state-container";
+import ActionStateContainer from "@/components/shared/action-state-container";
+import DownloadContainer from "@/components/shared/download-container";
 
 export default function PdfMerger(): ReactElement {
   const dispatch = useAppDispatch();
@@ -141,30 +146,14 @@ export default function PdfMerger(): ReactElement {
             PDF Merger
           </div>
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
-            <div>
-              <div className="h-[6rem] flex flex-col justify-center items-center mt-14 max-sm:-mt-6 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
-                <div>Upload your PDF files</div>
-                <div className="mt-4 max-sm:mt-3 text-xl max-sm:text-[1.2rem]">Limit - 20 Files / 20 MB Each</div>
-              </div>
-              <FilePicker IsMultiple={true} FileType="application/pdf" UploadFiles={uploadFilesInitializer} />
-            </div>
+            <UploadContainer IsMultipleUpload={true} UploadFiles={uploadFilesInitializer} />
           )}
           {pdfCoreState.IsUploadFailed && (
-            <div className="flex flex-col justify-center items-center text-center mt-16 mb-8 max-sm:-mt-4 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
-              <div className="mb-14 max-sm:mb-11">
-                <p className="px-6">{pdfCoreState.UploadMessage}</p>
-                <p className="mt-7 px-6">{pdfCoreState.UploadErrorMessage}</p>
-                <p className="mt-3 text-5xl max-sm:text-[2.2rem]">😕</p>
-              </div>
-              <div className="h-[6rem]">
-                <button
-                  className="text-3xl max-sm:text-2xl rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
-                  onClick={refreshApp}
-                >
-                  <i className="fa-solid fa-arrow-rotate-right mr-3"></i>Re-Do
-                </button>
-              </div>
-            </div>
+            <UploadFailedContainer
+              UploadMessage={pdfCoreState.UploadMessage}
+              UploadErrorMessage={pdfCoreState.UploadErrorMessage}
+              RefreshApp={refreshApp}
+            />
           )}
           {pdfCoreState.IsUploadComplete && (
             <div className="flex flex-col justify-center items-center text-center mt-16 mb-8 max-sm:-mt-4 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
@@ -241,12 +230,7 @@ export default function PdfMerger(): ReactElement {
   if (pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
     return (
       <>
-        <main className="h-screen flex flex-col justify-center items-center text-center">
-          <div className="mb-8 max-sm:mb-5 mx-12 text-4xl max-sm:text-[1.8rem] font-sans leading-[3.5rem]">
-            {pdfCoreState.UploadMessage}
-          </div>
-          {pdfCoreState.UploadMessage.length > 0 && <CircularSpinnerLarge />}
-        </main>
+        <UploadStateContainer UploadMessage={pdfCoreState.UploadMessage} />
       </>
     );
   }
@@ -254,12 +238,7 @@ export default function PdfMerger(): ReactElement {
   if (!loading && pdfMergerState.IsMergeInitiated && !pdfMergerState.IsMergeComplete) {
     return (
       <>
-        <main className="h-screen flex flex-col justify-center items-center text-center">
-          <div className="mb-8 max-sm:mb-5 mx-12 text-4xl max-sm:text-[1.8rem] font-sans leading-[3.5rem]">
-            {pdfCoreState.SubmitMessage}
-          </div>
-          {pdfCoreState.SubmitMessage.length > 0 && <CircularSpinnerLarge />}
-        </main>
+        <ActionStateContainer SubmitMessage={pdfCoreState.SubmitMessage} />
       </>
     );
   }
@@ -267,31 +246,11 @@ export default function PdfMerger(): ReactElement {
   if (!loading && pdfMergerState.IsMergeComplete) {
     return (
       <>
-        <main className="h-full flex flex-col justify-center items-center">
-          <div className="h-[8rem] flex flex-col justify-center items-center text-center mt-14 max-sm:mt-5 mx-12 text-6xl max-sm:text-[2.5rem] font-sans">
-            PDF Merger
-          </div>
-          <div className="h-[12rem] px-6 flex flex-col justify-center items-center text-center mb-8 mt-5 max-sm:-mt-11 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
-            <div className="mb-5 max-sm:mb-4">Successfully Merged {pdfMergerState.UploadedFiles.length} PDF files. ✅</div>
-            <div className="text-5xl max-sm:text-[2.2rem]">🎉 🎊</div>
-          </div>
-          <div className="h-[6rem] max-sm:h-[5rem]">
-            <button
-              className="text-3xl max-sm:text-2xl rounded-lg bg-green-900 hover:bg-green-950 hover:ring hover:ring-green-700 text-gray-200 p-2 h-[4.5rem] w-56 max-sm:h-16 max-sm:w-44"
-              onClick={downloadFile}
-            >
-              <i className="fa-solid fa-download mr-3"></i>Download
-            </button>
-          </div>
-          <div className="h-[6rem]">
-            <button
-              className="text-3xl max-sm:text-2xl rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-[4.5rem] w-56 max-sm:h-16 max-sm:w-44"
-              onClick={refreshApp}
-            >
-              <i className="fa-solid fa-arrow-rotate-right mr-3"></i>Re-Do
-            </button>
-          </div>
-        </main>
+        <DownloadContainer
+          DownloadMessage={`Successfully Merged ${pdfMergerState.UploadedFiles.length} PDF files. ✅`}
+          DownloadFile={downloadFile}
+          RefreshApp={refreshApp}
+        />
       </>
     );
   }
