@@ -13,27 +13,27 @@ export default function Home(): ReactElement {
         </div>
         <div className="h-[21rem] w-[40rem] max-sm:h-[25.5rem] max-sm:w-[23rem] flex flex-wrap flex-row justify-center items-center mt-6 max-sm:mt-4 text-3xl max-sm:text-2xl font-sans">
           <Link href="/pdf-merger">
-            <button className="m-5 max-sm:m-3 rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-1 h-32 w-40 max-sm:h-[7rem] max-sm:w-[8.5rem]">
+            <button className="m-5 max-sm:m-3 rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-32 w-40 max-sm:h-[7rem] max-sm:w-[8.5rem]">
               PDF Merger
             </button>
           </Link>
           <Link href="/pdf-extractor">
-            <button className="m-5 max-sm:m-3 rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-1 h-32 w-40 max-sm:h-[7rem] max-sm:w-[8.5rem]">
+            <button className="m-5 max-sm:m-3 rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-32 w-40 max-sm:h-[7rem] max-sm:w-[8.5rem]">
               PDF Page Extractor
             </button>
           </Link>
           <Link href="/pdf-page-deleter">
-            <button className="m-5 max-sm:m-3 rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-1 h-32 w-40 max-sm:h-[7rem] max-sm:w-[8.5rem]">
+            <button className="m-5 max-sm:m-3 rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-32 w-40 max-sm:h-[7rem] max-sm:w-[8.5rem]">
               PDF Page Deleter
             </button>
           </Link>
           <Link href="/image-to-pdf">
-            <button className="m-5 max-sm:m-3 rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-1 h-32 w-40 max-sm:h-[7rem] max-sm:w-[8.5rem]">
+            <button className="m-5 max-sm:m-3 rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-32 w-40 max-sm:h-[7rem] max-sm:w-[8.5rem]">
               Image To PDF
             </button>
           </Link>
           <Link href="/pdf-encryptor">
-            <button className="m-5 max-sm:m-3 rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-1 h-32 w-40 max-sm:h-[7rem] max-sm:w-[8.5rem]">
+            <button className="m-5 max-sm:m-3 rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-32 w-40 max-sm:h-[7rem] max-sm:w-[8.5rem]">
               PDF Encryptor
             </button>
           </Link>
