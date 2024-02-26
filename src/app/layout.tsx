@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import "@fortawesome/fontawesome-free/css/all.css";
+import "../../public/fontawesome/css/fontawesome.min.css";
+import "../../public/fontawesome/css/brands.min.css";
+import "../../public/fontawesome/css/solid.min.css";
 import ReduxStoreProvider from "./redux-store-provider";
 
 const inter = Inter({ subsets: ["latin"] });

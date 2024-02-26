@@ -21,6 +21,7 @@ import UploadFailedContainer from "@/components/shared/upload-failed-container";
 import UploadStateContainer from "@/components/shared/upload-state-container";
 import ActionStateContainer from "@/components/shared/action-state-container";
 import DownloadContainer from "@/components/shared/download-container";
+import { cascadiaCode } from "@/components/utils/fonts";
 
 export default function PdfPageDeleter(): ReactElement {
   const dispatch = useAppDispatch();
@@ -195,7 +196,7 @@ export default function PdfPageDeleter(): ReactElement {
                 <div className="h-[9.5rem] mb-12 max-sm:mb-10 text-[1.5rem] max-sm:text-[1.25rem]">
                   <p className="px-6 mb-4">{"Enter the page(s) to delete:"}</p>
                   <input
-                    className="mb-4 border border-[#AEAEAE] rounded-lg font-[monospace] h-auto w-32 max-sm:w-28 mx-auto text-center"
+                    className={`mb-4 border border-[#AEAEAE] rounded-lg font-mono ${cascadiaCode.variable} h-auto w-32 max-sm:w-28 mx-auto text-center`}
                     type="text"
                     value={pdfPageDelState.PagesToDelete}
                     onInput={(e) => startPageDeleterValidator(e.currentTarget.value)}
