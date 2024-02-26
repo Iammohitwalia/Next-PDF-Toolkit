@@ -1,7 +1,6 @@
 "use client";
 
-import FilePicker from "@/components/shared/file-picker";
-import { CircularSpinnerLarge, CircularSpinnerSmall } from "@/components/shared/spinners";
+import { CircularSpinnerSmall } from "@/components/shared/spinners";
 import { delay } from "@/components/utils/utils";
 import { ReactElement, useCallback, useEffect, useState } from "react";
 import { ProcessedFile } from "@/components/models/processed-file";
@@ -253,6 +252,7 @@ export default function PdfPageDeleter(): ReactElement {
     return (
       <>
         <DownloadContainer
+          ToolName="PDF Page Deleter"
           DownloadMessage={
             pdfPageDelState.TotalPagesToDelete == 1
               ? "Successfully Deleted 1 Page from the PDF File. ✅"

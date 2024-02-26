@@ -1,7 +1,5 @@
 "use client";
 
-import FilePicker from "@/components/shared/file-picker";
-import { CircularSpinnerLarge } from "@/components/shared/spinners";
 import { delay } from "@/components/utils/utils";
 import { ReactElement, useCallback, useEffect, useState } from "react";
 import { ProcessedFile } from "@/components/models/processed-file";
@@ -247,6 +245,7 @@ export default function PdfMerger(): ReactElement {
     return (
       <>
         <DownloadContainer
+          ToolName="PDF Merger"
           DownloadMessage={`Successfully Merged ${pdfMergerState.UploadedFiles.length} PDF files. ✅`}
           DownloadFile={downloadFile}
           RefreshApp={refreshApp}

@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 
 interface DownloadContainerProps {
+  ToolName: string;
   DownloadMessage: string;
   DownloadFile: () => Promise<void>;
   RefreshApp: () => void;
@@ -11,7 +12,7 @@ export default function DownloadContainer(props: DownloadContainerProps): ReactE
     <>
       <main className="h-full flex flex-col justify-center items-center">
         <div className="h-[8rem] flex flex-col justify-center items-center text-center mt-14 max-sm:mt-5 mx-12 text-6xl max-sm:text-[2.5rem] font-sans">
-          PDF Merger
+          {props.ToolName}
         </div>
         <div className="h-[12rem] px-6 flex flex-col justify-center items-center text-center mb-8 mt-5 max-sm:-mt-11 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
           <div className="mb-5 max-sm:mb-4">{props.DownloadMessage}</div>
