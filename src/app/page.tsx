@@ -6,7 +6,7 @@ export default function Home(): ReactElement {
     <>
       <main className="h-full flex flex-col justify-center items-center">
         <div className="h-[8rem] flex flex-col justify-center items-center text-center mt-14 max-sm:mt-10 mx-12 text-6xl max-sm:text-5xl font-sans">
-          Welcome to the PDF Toolkit
+          PDF Toolkit
         </div>
         <div className="h-[6rem] flex flex-col justify-center items-center mt-9 text-5xl max-sm:text-4xl font-sans">
           Available Tools
