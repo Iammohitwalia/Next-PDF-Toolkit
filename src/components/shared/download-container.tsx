@@ -20,7 +20,7 @@ export default function DownloadContainer(props: DownloadContainerProps): ReactE
         </div>
         <div className="h-[6rem] max-sm:h-[5rem]">
           <button
-            className="text-3xl max-sm:text-2xl rounded-lg bg-green-900 hover:bg-green-950 hover:ring hover:ring-green-700 text-gray-200 p-2 h-[4.5rem] w-56 max-sm:h-16 max-sm:w-44"
+            className="text-3xl max-sm:text-2xl rounded-xl bg-green-900 hover:bg-green-950 hover:ring hover:ring-green-700 text-gray-200 p-2 h-[4.5rem] w-56 max-sm:h-16 max-sm:w-44"
             onClick={props.DownloadFile}
           >
             <i className="fa-solid fa-download mr-3"></i>Download
@@ -28,7 +28,7 @@ export default function DownloadContainer(props: DownloadContainerProps): ReactE
         </div>
         <div className="h-[6rem]">
           <button
-            className="text-3xl max-sm:text-2xl rounded-lg bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-[4.5rem] w-56 max-sm:h-16 max-sm:w-44"
+            className="text-3xl max-sm:text-2xl rounded-xl bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-[4.5rem] w-56 max-sm:h-16 max-sm:w-44"
             onClick={props.RefreshApp}
           >
             <i className="fa-solid fa-arrow-rotate-right mr-3"></i>Re-Do
