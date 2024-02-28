@@ -159,7 +159,7 @@ export default function PdfPageDeleter(): ReactElement {
     return (
       <>
         <main className="h-full flex flex-col justify-center items-center">
-          <div className="h-[8rem] flex flex-col justify-center items-center text-center mt-14 max-sm:mt-5 mx-8 text-6xl max-sm:text-[2.5rem] font-sans">
+          <div className="h-[8rem] flex flex-col justify-center items-center text-center mt-14 max-sm:mt-5 px-8 text-6xl max-sm:text-[2.5rem] font-sans">
             PDF Page Deleter
           </div>
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
