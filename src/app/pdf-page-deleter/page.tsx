@@ -130,7 +130,7 @@ export default function PdfPageDeleter(): ReactElement {
         PagesToDelete: pagesToDelete,
         PagesToDeleteValidator: "CHECKING"
       }));
-      const timeOutId: NodeJS.Timeout = setTimeout(() => validatePageDeleter(pagesToDelete), 350);
+      const timeOutId: NodeJS.Timeout = setTimeout(() => validatePageDeleter(pagesToDelete), 850);
       setValidatorTimer(timeOutId);
     }
   }

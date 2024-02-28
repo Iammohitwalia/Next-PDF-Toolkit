@@ -4,7 +4,7 @@ export type PageDeleterValidatorResult = [PageDeleterValidatorState, number, str
 
 export function validatePagesToDelete(pagesToDelete: string, totalPages: number): PageDeleterValidatorResult {
   let regex1: RegExp = new RegExp(String.raw`^([1-9])(\d*)$`); // RegEx for a Single Number
-  let regex2: RegExp = new RegExp(String.raw`^([1-9]{1})([0-9]*)-([0-9]+)$`); // RegEx for a Range (2 Numbers Separated by a '-')
+  let regex2: RegExp = new RegExp(String.raw`^([1-9]{1})(\d*)-([1-9]{1})(\d*)$`); // RegEx for a Range (2 Numbers Separated by a '-')
   let validPagesToDelete: number = 0;
   let validatorResultInfo: string = "";
   let validatorState: PageDeleterValidatorState = "CHECKING";
