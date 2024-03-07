@@ -1,6 +1,6 @@
 import { ProcessedFile } from "../models/processed-file";
 
-interface PdfMergerState {
+export interface PdfMergerState {
   UploadedFiles: ProcessedFile[];
   IsMergeComplete: boolean;
   IsMergeInitiated: boolean;
@@ -9,7 +9,7 @@ interface PdfMergerState {
   FileTypeAllowed: string;
 }
 
-const initialPdfMergerState: PdfMergerState = {
+export const initialPdfMergerState: PdfMergerState = {
   UploadedFiles: [],
   IsMergeComplete: false,
   IsMergeInitiated: false,
@@ -17,6 +17,3 @@ const initialPdfMergerState: PdfMergerState = {
   MaxSizeAllowed: 20971520,
   FileTypeAllowed: "application/pdf"
 };
-
-export type { PdfMergerState };
-export { initialPdfMergerState };

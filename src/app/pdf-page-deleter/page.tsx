@@ -183,7 +183,7 @@ export default function PdfPageDeleter(): ReactElement {
                     <tr key={pdfPageDelState.UploadedFile!.Id}>
                       <td className="px-4 text-center">
                         <i className="text-4xl max-sm:text-3xl mb-1 fa-solid fa-file-pdf"></i>
-                        <p>{pdfPageDelState.UploadedFile!.Content!.name}</p>
+                        <p>{pdfPageDelState.UploadedFile!.Content.name}</p>
                         <p>{`(${pdfPageDelState.TotalPages} Pages)`}</p>
                         <span
                           className="hover:text-white cursor-pointer fa-solid fa-xmark pt-3"
@@ -234,7 +234,7 @@ export default function PdfPageDeleter(): ReactElement {
     );
   }
 
-  if (pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
+  if (!loading && pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
     return (
       <>
         <UploadStateContainer UploadMessage={pdfCoreState.UploadMessage} />

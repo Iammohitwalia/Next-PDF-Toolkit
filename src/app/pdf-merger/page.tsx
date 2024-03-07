@@ -174,7 +174,7 @@ export default function PdfMerger(): ReactElement {
                               <i className="fa-solid fa-file-pdf"></i>
                             </td>
                             <td className="pb-[0.8rem] max-sm:pb-[0.65rem] pr-4 max-sm:pr-3 text-left">
-                              {file.Content!.name}
+                              {file.Content.name}
                             </td>
                             <td className="pb-[0.8rem] max-sm:pb-[0.65rem] text-center pr-4">
                               {pdfMergerState.UploadedFiles.indexOf(file) > 0 && (
@@ -227,7 +227,7 @@ export default function PdfMerger(): ReactElement {
     );
   }
 
-  if (pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
+  if (!loading && pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
     return (
       <>
         <UploadStateContainer UploadMessage={pdfCoreState.UploadMessage} />

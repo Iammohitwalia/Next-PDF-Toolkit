@@ -1,4 +1,4 @@
-interface PdfCoreState {
+export interface PdfCoreState {
   IsUploadComplete: boolean;
   IsUploadInitiated: boolean;
   IsUploadFailed: boolean;
@@ -10,7 +10,7 @@ interface PdfCoreState {
   FinalPdfUrl: string;
 }
 
-const initialPdfCoreState: PdfCoreState = {
+export const initialPdfCoreState: PdfCoreState = {
   IsUploadComplete: false,
   IsUploadInitiated: false,
   IsUploadFailed: false,
@@ -21,6 +21,3 @@ const initialPdfCoreState: PdfCoreState = {
   OutputFormat: "data:application/pdf;base64,",
   FinalPdfUrl: ""
 };
-
-export type { PdfCoreState };
-export { initialPdfCoreState };

@@ -186,7 +186,7 @@ export default function PdfPageExtractor(): ReactElement {
                     <tr key={pdfPageExtrState.UploadedFile!.Id}>
                       <td className="px-4 text-center">
                         <i className="text-4xl max-sm:text-3xl mb-1 fa-solid fa-file-pdf"></i>
-                        <p>{pdfPageExtrState.UploadedFile!.Content!.name}</p>
+                        <p>{pdfPageExtrState.UploadedFile!.Content.name}</p>
                         <p>{`(${pdfPageExtrState.TotalPages} Pages)`}</p>
                         <span
                           className="hover:text-white cursor-pointer fa-solid fa-xmark pt-3"
@@ -237,7 +237,7 @@ export default function PdfPageExtractor(): ReactElement {
     );
   }
 
-  if (pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
+  if (!loading && pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
     return (
       <>
         <UploadStateContainer UploadMessage={pdfCoreState.UploadMessage} />
