@@ -8,10 +8,10 @@ export default function Home(): ReactElement {
         <div className="h-[8rem] flex flex-col justify-center items-center text-center mt-14 max-sm:mt-10 mx-12 text-6xl max-sm:text-5xl font-sans">
           PDF Toolkit
         </div>
-        <div className="h-[6rem] flex flex-col justify-center items-center mt-9 text-5xl max-sm:text-4xl font-sans">
+        <div className="h-[6rem] flex flex-col justify-center items-center mt-9 max-sm:mt-3 text-5xl max-sm:text-4xl font-sans">
           Available Tools
         </div>
-        <div className="h-[21rem] w-[40rem] max-sm:h-[25.5rem] max-sm:w-[23rem] flex flex-wrap flex-row justify-center items-center mt-6 max-sm:mt-4 text-3xl max-sm:text-2xl font-sans">
+        <div className="h-[21rem] w-[40rem] max-sm:h-[25.5rem] max-sm:w-[23rem] flex flex-wrap flex-row justify-center items-center mt-6 max-sm:mt-3 text-3xl max-sm:text-2xl font-sans">
           <Link href="/pdf-merger">
             <button className="m-5 max-sm:m-3 rounded-xl bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-32 w-40 max-sm:h-[7rem] max-sm:w-[8.5rem]">
               PDF Merger
