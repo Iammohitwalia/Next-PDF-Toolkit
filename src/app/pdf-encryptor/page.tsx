@@ -205,7 +205,7 @@ export default function PdfEncryptor(): ReactElement {
                     placeholder="Password"
                   />
                   {pdfEncryptorState.EncryptorValidator === "CHECKING" ? (
-                    <div className="mb-4 max-sm:mb-[1.1rem]">
+                    <div className="mb-4 max-sm:mb-[1.12rem]">
                       <CircularSpinnerSmall />
                     </div>
                   ) : (
