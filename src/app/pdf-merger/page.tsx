@@ -144,7 +144,7 @@ export default function PdfMerger(): ReactElement {
             PDF Merger
           </div>
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
-            <UploadContainer IsMultipleUpload={true} UploadFiles={uploadFilesInitializer} />
+            <UploadContainer UploadType="PDF" IsMultipleUpload={true} UploadFiles={uploadFilesInitializer} />
           )}
           {pdfCoreState.IsUploadFailed && (
             <UploadFailedContainer

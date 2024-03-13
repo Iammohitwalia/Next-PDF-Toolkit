@@ -1,11 +1,13 @@
 import { ReactElement } from "react";
 
-type PDF_FILE_TYPE = "application/pdf";
-type IMAGE_FILE_TYPE = "image/png,image/jpg,image/jpeg,image/svg+xml";
+type UploadFileType = "PDF" | "Image";
+type PdfFileType = "application/pdf";
+type ImageFileTypes = "image/png,image/jpg,image/jpeg,image/svg+xml";
 
 interface FilePickerProps {
+  UploadType: UploadFileType;
   IsMultiple: boolean;
-  FileType: PDF_FILE_TYPE | IMAGE_FILE_TYPE;
+  FileType: PdfFileType | ImageFileTypes;
   UploadFiles: (e: FileList | null) => void;
 }
 
@@ -22,7 +24,9 @@ export default function FilePicker(props: FilePickerProps): ReactElement {
           onChange={(e) => props.UploadFiles(e.target.files)}
         />
         <div className="flex flex-col justify-center items-center text-center">
-          <i className="text-8xl max-sm:text-6xl mb-6 max-sm:mb-4 fa-solid fa-file-pdf"></i>
+          <i
+            className={`text-8xl max-sm:text-6xl mb-6 max-sm:mb-4 fa-solid fa-file-${props.UploadType.toLowerCase()} fa-beat-fade`}
+          ></i>
           <p>Drag & Drop OR Click To Upload</p>
         </div>
       </div>

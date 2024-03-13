@@ -166,7 +166,7 @@ export default function PdfPageExtractor(): ReactElement {
             PDF Page Extractor
           </div>
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
-            <UploadContainer IsMultipleUpload={false} UploadFiles={uploadFilesInitializer} />
+            <UploadContainer UploadType="PDF" IsMultipleUpload={false} UploadFiles={uploadFilesInitializer} />
           )}
           {pdfCoreState.IsUploadFailed && (
             <UploadFailedContainer
