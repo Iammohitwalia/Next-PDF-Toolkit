@@ -185,7 +185,7 @@ export default function PdfEncryptor(): ReactElement {
                     <tr key={pdfEncryptorState.UploadedFile!.Id}>
                       <td className="px-4 text-center">
                         <i className="text-4xl max-sm:text-3xl mb-1 fa-solid fa-file-pdf"></i>
-                        <p>{pdfEncryptorState.UploadedFile!.Content!.name}</p>
+                        <p>{pdfEncryptorState.UploadedFile!.Content.name}</p>
                         <span
                           className="hover:text-white cursor-pointer fa-solid fa-xmark pt-3"
                           title="Remove File"
