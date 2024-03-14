@@ -24,10 +24,12 @@ export default function FilePicker(props: FilePickerProps): ReactElement {
           onChange={(e) => props.UploadFiles(e.target.files)}
         />
         <div className="flex flex-col justify-center items-center text-center">
-          <i
-            className={`text-8xl max-sm:text-6xl mb-6 max-sm:mb-4 fa-solid fa-file-${props.UploadType.toLowerCase()} fa-beat-fade`}
-          ></i>
-          <p>Drag & Drop OR Click To Upload</p>
+          <i className={`text-9xl max-sm:text-8xl mb-8 max-sm:mb-6 fa-solid fa-file-${props.UploadType.toLowerCase()}`}></i>
+          <div className="text-[1.5rem] max-sm:text-[1.3rem]">
+            <p>Drag & Drop</p>
+            <p>OR</p>
+            <p>Click To Upload</p>
+          </div>
         </div>
       </div>
     </>
