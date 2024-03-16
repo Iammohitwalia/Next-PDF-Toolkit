@@ -6,6 +6,7 @@ import { ProcessedFile } from "@/components/models/processed-file";
 import { useAppDispatch, useAppSelector } from "@/lib/redux-hooks";
 import {
   refreshCoreState,
+  setFinalPdfUrl,
   setIsUploadComplete,
   setIsUploadFailed,
   setIsUploadInitiated,
@@ -19,6 +20,7 @@ import UploadFailedContainer from "@/components/shared/upload-failed-container";
 import UploadStateContainer from "@/components/shared/upload-state-container";
 import ActionStateContainer from "@/components/shared/action-state-container";
 import DownloadContainer from "@/components/shared/download-container";
+import { mergePdfs } from "@/components/pdf-merger/pdf-merger-core";
 
 export default function PdfMerger(): ReactElement {
   const dispatch = useAppDispatch();
@@ -130,7 +132,11 @@ export default function PdfMerger(): ReactElement {
     let submitMessage: string = `Merging ${pdfMergerState.UploadedFiles.length} PDF files... ⏳`;
     dispatch(setSubmitMessage(submitMessage));
     setPdfMergerState((prev) => ({ ...prev, IsMergeInitiated: true }));
+
+    const mergedPdfUrl: string = await mergePdfs(pdfMergerState.UploadedFiles);
+    dispatch(setFinalPdfUrl({ PdfFilename: "MergedPDF", PdfUrl: mergedPdfUrl }));
     await delay(1500);
+
     setPdfMergerState((prev) => ({ ...prev, IsMergeComplete: true }));
   }
 
@@ -249,7 +255,6 @@ export default function PdfMerger(): ReactElement {
         <DownloadContainer
           ToolName="PDF Merger"
           DownloadMessage={`Successfully Merged ${pdfMergerState.UploadedFiles.length} PDF files. ✅`}
-          DownloadFile={downloadFile}
           RefreshApp={refreshApp}
         />
       </>

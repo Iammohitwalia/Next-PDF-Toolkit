@@ -7,6 +7,7 @@ import { ProcessedFile } from "@/components/models/processed-file";
 import { useAppDispatch, useAppSelector } from "@/lib/redux-hooks";
 import {
   refreshCoreState,
+  setFinalPdfUrl,
   setIsUploadComplete,
   setIsUploadFailed,
   setIsUploadInitiated,
@@ -22,6 +23,11 @@ import UploadStateContainer from "@/components/shared/upload-state-container";
 import ActionStateContainer from "@/components/shared/action-state-container";
 import DownloadContainer from "@/components/shared/download-container";
 import { cascadiaCode } from "@/components/utils/fonts";
+import {
+  deletePagesFromPdf,
+  getPageNumbersToDelete,
+  getTotalPagesFromPdf
+} from "@/components/pdf-page-deleter/pdf-page-deleter-core";
 
 export default function PdfPageDeleter(): ReactElement {
   const dispatch = useAppDispatch();
@@ -70,7 +76,7 @@ export default function PdfPageDeleter(): ReactElement {
           return;
         }
 
-        let totalPages: number = 10;
+        const totalPages: number = await getTotalPagesFromPdf(await processedFile.Content.arrayBuffer());
 
         if (totalPages === 1) {
           handleFailedUpload("That PDF file has only 1 page, which is not enough! It must have at least 2 pages.");
@@ -144,7 +150,15 @@ export default function PdfPageDeleter(): ReactElement {
     }
     dispatch(setSubmitMessage(submitMessage));
     setPdfPageDelState((prev) => ({ ...prev, IsDeletionInitiated: true }));
+
+    const pageNumbersToDelete: number[] = getPageNumbersToDelete(pdfPageDelState.PagesToDelete);
+    const pdfWithDeletedPagesUrl: string = await deletePagesFromPdf(
+      await pdfPageDelState.UploadedFile!.Content.arrayBuffer(),
+      pageNumbersToDelete
+    );
+    dispatch(setFinalPdfUrl({ PdfFilename: "ModifiedPDF", PdfUrl: pdfWithDeletedPagesUrl }));
     await delay(1500);
+
     setPdfPageDelState((prev) => ({ ...prev, IsDeletionComplete: true }));
   }
 
@@ -260,7 +274,6 @@ export default function PdfPageDeleter(): ReactElement {
               ? "Successfully Deleted 1 Page from the PDF File. ✅"
               : `Successfully Deleted ${pdfPageDelState.TotalPagesToDelete} Pages from the PDF File. ✅`
           }
-          DownloadFile={downloadFile}
           RefreshApp={refreshApp}
         />
       </>

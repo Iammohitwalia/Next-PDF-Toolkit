@@ -266,7 +266,6 @@ export default function PdfEncryptor(): ReactElement {
         <DownloadContainer
           ToolName="PDF Encryptor"
           DownloadMessage="Successfully Encrypted the PDF File. ✅"
-          DownloadFile={downloadFile}
           RefreshApp={refreshApp}
         />
       </>

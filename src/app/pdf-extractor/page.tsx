@@ -263,7 +263,6 @@ export default function PdfPageExtractor(): ReactElement {
               ? "Successfully Extracted 1 Page from the PDF File. ✅"
               : `Successfully Extracted ${pdfPageExtrState.TotalPagesToExtract} Pages from the PDF File. ✅`
           }
-          DownloadFile={downloadFile}
           RefreshApp={refreshApp}
         />
       </>

@@ -203,7 +203,6 @@ export default function ImageToPdf(): ReactElement {
         <DownloadContainer
           ToolName="Image To PDF Converter"
           DownloadMessage="Successfully Converted the Image to a PDF File. ✅"
-          DownloadFile={downloadFile}
           RefreshApp={refreshApp}
         />
       </>

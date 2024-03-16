@@ -6,7 +6,7 @@ export interface PdfCoreState {
   UploadErrorMessage: string;
   SubmitMessage: string;
   DownloadMessage: string;
-  OutputFormat: string;
+  FinalPdfFilename: string;
   FinalPdfUrl: string;
 }
 
@@ -18,6 +18,6 @@ export const initialPdfCoreState: PdfCoreState = {
   UploadErrorMessage: "",
   SubmitMessage: "",
   DownloadMessage: "",
-  OutputFormat: "data:application/pdf;base64,",
+  FinalPdfFilename: "",
   FinalPdfUrl: ""
 };

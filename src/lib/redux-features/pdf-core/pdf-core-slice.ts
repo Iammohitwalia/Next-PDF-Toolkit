@@ -29,6 +29,11 @@ export const pdfCoreSlice = createSlice({
       state.SubmitMessage = action.payload;
     },
 
+    setFinalPdfUrl: (state, action: PayloadAction<{ PdfFilename: string; PdfUrl: string }>) => {
+      state.FinalPdfFilename = action.payload.PdfFilename;
+      state.FinalPdfUrl = action.payload.PdfUrl;
+    },
+
     refreshCoreState: (state) => {
       state.IsUploadComplete = false;
       state.IsUploadInitiated = false;
@@ -49,6 +54,7 @@ export const {
   setUploadMessage,
   setUploadErrorMessage,
   setSubmitMessage,
+  setFinalPdfUrl,
   refreshCoreState
 } = pdfCoreSlice.actions;
 

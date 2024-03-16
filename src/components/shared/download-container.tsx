@@ -1,13 +1,24 @@
 import { ReactElement } from "react";
+import { useAppSelector } from "@/lib/redux-hooks";
 
 interface DownloadContainerProps {
   ToolName: string;
   DownloadMessage: string;
-  DownloadFile: () => Promise<void>;
   RefreshApp: () => void;
 }
 
 export default function DownloadContainer(props: DownloadContainerProps): ReactElement {
+  const pdfCoreState = useAppSelector((state) => state.pdfCore);
+
+  function downloadPdfFile(): void {
+    let link = document.createElement("a");
+    link.download = pdfCoreState.FinalPdfFilename;
+    link.href = pdfCoreState.FinalPdfUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   return (
     <>
       <main className="h-full flex flex-col justify-center items-center">
@@ -27,7 +38,7 @@ export default function DownloadContainer(props: DownloadContainerProps): ReactE
         <div className="h-[6rem] max-sm:h-[5rem]">
           <button
             className="text-3xl max-sm:text-2xl rounded-xl bg-green-900 hover:bg-green-950 hover:ring hover:ring-green-700 text-gray-200 p-2 h-[4.5rem] w-56 max-sm:h-16 max-sm:w-44"
-            onClick={props.DownloadFile}
+            onClick={downloadPdfFile}
           >
             <i className="fa-solid fa-download mr-3"></i>Download
           </button>
