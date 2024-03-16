@@ -19,7 +19,7 @@ export const initialPdfPageExtractorState: PdfPageExtractorState = {
   UploadedFile: null,
   TotalPages: 0,
   PagesToExtract: "",
-  PagesToExtractInfo: "(Examples: 2, 1-2, 5-9, etc.)",
+  PagesToExtractInfo: "(Format/Examples: 2 or 3,7 or 15-30)",
   PagesToExtractValidator: "EMPTY",
   TotalPagesToExtract: 0,
   IsExtractionComplete: false,

@@ -19,7 +19,7 @@ export const initialPdfPageDeleterState: PdfPageDeleterState = {
   UploadedFile: null,
   TotalPages: 0,
   PagesToDelete: "",
-  PagesToDeleteInfo: "(Examples: 2, 1-2, 5-9, etc.)",
+  PagesToDeleteInfo: "(Format/Examples: 2 or 3,7 or 15-30)",
   PagesToDeleteValidator: "EMPTY",
   TotalPagesToDelete: 0,
   IsDeletionComplete: false,
