@@ -85,7 +85,7 @@ export default function RootLayout({
       </head> */}
 
         <body
-          className={`${inter.className} max-w-[100vw] overflow-x-hidden bg-[#F2F3F5] dark:bg-[#181818] text-[#23272F] dark:text-[#ffffffa6]`}
+          className={`${inter.className} max-w-[100vw] overflow-x-hidden bg-[#F2F3F5] dark:bg-[#181818] text-[#404756] dark:text-[#ffffffa6]`}
         >
           {children}
         </body>

@@ -200,7 +200,7 @@ export default function PdfPageDeleter(): ReactElement {
                         <p>{pdfPageDelState.UploadedFile!.Content.name}</p>
                         <p>{`(${pdfPageDelState.TotalPages} Pages)`}</p>
                         <span
-                          className="hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-md hover:shadow hover:shadow-[#23272F] dark:hover:shadow-[#ffffffa6] p-1 cursor-pointer fa-solid fa-xmark mt-2"
+                          className="hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-md hover:shadow hover:shadow-[#404756] dark:hover:shadow-[#ffffffa6] p-1 cursor-pointer fa-solid fa-xmark mt-2"
                           title="Remove File"
                           onClick={removeFile}
                         ></span>
@@ -225,7 +225,7 @@ export default function PdfPageDeleter(): ReactElement {
                 </div>
                 <div className="h-[6rem] max-sm:h-[5rem]">
                   <button
-                    className="text-3xl max-sm:text-2xl rounded-xl bg-green-900 hover:bg-green-950 disabled:bg-zinc-800 hover:ring hover:ring-green-700 disabled:ring-transparent text-gray-200 disabled:text-zinc-600 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
+                    className="text-3xl max-sm:text-2xl rounded-xl bg-green-700 dark:bg-green-900 hover:bg-green-900 dark:hover:bg-green-950 disabled:bg-zinc-700 dark:disabled:bg-zinc-800 hover:ring hover:ring-green-500 dark:hover:ring-green-700 disabled:ring-transparent text-gray-200 disabled:text-zinc-500 dark:disabled:text-zinc-600 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
                     onClick={submitFile}
                     disabled={pdfPageDelState.PagesToDeleteValidator === "VALID" ? false : true}
                   >
@@ -235,7 +235,7 @@ export default function PdfPageDeleter(): ReactElement {
               </div>
               <div className="h-[6rem]">
                 <button
-                  className="text-3xl max-sm:text-2xl rounded-xl bg-[#05336E] hover:bg-[#04234D] hover:ring hover:ring-[#074DA6] text-gray-200 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
+                  className="text-3xl max-sm:text-2xl rounded-xl bg-[#074DA6] dark:bg-[#05336E] hover:bg-[#05346e] dark:hover:bg-[#04234D] hover:ring hover:ring-[#0091ff] dark:hover:ring-[#074DA6] text-gray-200 p-2 h-[4.5rem] w-52 max-sm:h-16 max-sm:w-40"
                   onClick={refreshApp}
                 >
                   <i className="fa-solid fa-arrow-rotate-right mr-3"></i>Re-Do
