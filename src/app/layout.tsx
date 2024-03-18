@@ -56,7 +56,7 @@ export default function RootLayout({
 }>) {
   return (
     <ReduxStoreProvider>
-      <html lang="en">
+      <html className="max-w-[100vw] overflow-x-hidden" lang="en">
         {/* <head>
         <meta charSet="utf-8" />
         <meta
@@ -84,7 +84,11 @@ export default function RootLayout({
         <meta property="og:image" content="https://next-pdftoolkit.subhamk.com/android-chrome-192x192.png" />
       </head> */}
 
-        <body className={inter.className}>{children}</body>
+        <body
+          className={`${inter.className} max-w-[100vw] overflow-x-hidden bg-[#F2F3F5] dark:bg-[#181818] text-[#23272F] dark:text-[#ffffffa6]`}
+        >
+          {children}
+        </body>
       </html>
     </ReduxStoreProvider>
   );

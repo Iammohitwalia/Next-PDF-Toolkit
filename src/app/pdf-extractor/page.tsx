@@ -162,7 +162,7 @@ export default function PdfPageExtractor(): ReactElement {
     return (
       <>
         <main className="h-full flex flex-col justify-center items-center">
-          <div className="h-[8rem] flex flex-col justify-center items-center text-center mt-14 max-sm:mt-5 px-4 text-6xl max-sm:text-[2.5rem] font-sans">
+          <div className="font-bold tracking-wide h-[8rem] flex flex-col justify-center items-center text-center max-sm:mb-6 mt-14 max-sm:mt-5 px-4 text-6xl max-sm:text-[2.5rem] font-sans">
             PDF Page Extractor
           </div>
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
@@ -179,7 +179,7 @@ export default function PdfPageExtractor(): ReactElement {
             <div className="flex flex-col justify-center items-center text-center mt-16 mb-8 max-sm:-mt-4 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
               <div>
                 <div className="mb-8 max-sm:mb-7">
-                  <p className="px-6">{pdfCoreState.UploadMessage}</p>
+                  <p className="font-semibold px-6">{pdfCoreState.UploadMessage}</p>
                 </div>
                 <table className="table-fixed border-collapse mx-auto mb-8 max-sm:mb-7 text-[1.2rem] max-sm:text-[1.1rem]">
                   <tbody>
@@ -189,7 +189,7 @@ export default function PdfPageExtractor(): ReactElement {
                         <p>{pdfPageExtrState.UploadedFile!.Content.name}</p>
                         <p>{`(${pdfPageExtrState.TotalPages} Pages)`}</p>
                         <span
-                          className="hover:text-white cursor-pointer fa-solid fa-xmark mt-2"
+                          className="hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-md hover:shadow hover:shadow-[#23272F] dark:hover:shadow-[#ffffffa6] p-1 cursor-pointer fa-solid fa-xmark mt-2"
                           title="Remove File"
                           onClick={removeFile}
                         ></span>

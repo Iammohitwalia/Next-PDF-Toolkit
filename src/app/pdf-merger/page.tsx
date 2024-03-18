@@ -146,7 +146,7 @@ export default function PdfMerger(): ReactElement {
     return (
       <>
         <main className="h-full flex flex-col justify-center items-center">
-          <div className="h-[8rem] flex flex-col justify-center items-center text-center mt-14 max-sm:mt-5 px-4 text-6xl max-sm:text-[2.5rem] font-sans">
+          <div className="font-bold tracking-wide h-[8rem] flex flex-col justify-center items-center text-center mt-14 max-sm:mt-5 px-4 text-6xl max-sm:text-[2.5rem] font-sans">
             PDF Merger
           </div>
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
@@ -164,13 +164,13 @@ export default function PdfMerger(): ReactElement {
               <div>
                 {pdfMergerState.UploadedFiles.length <= 1 ? (
                   <div className="mb-14 max-sm:mb-11">
-                    <p className="px-6">{pdfCoreState.UploadErrorMessage}</p>
+                    <p className="font-semibold px-6">{pdfCoreState.UploadErrorMessage}</p>
                     {pdfCoreState.UploadErrorMessage.length > 0 && <p className="mt-3 text-5xl max-sm:text-[2.2rem]">😕</p>}
                   </div>
                 ) : (
                   <div>
                     <div className="mb-8 max-sm:mb-7">
-                      <p className="px-6">{pdfCoreState.UploadMessage}</p>
+                      <p className="font-semibold px-6">{pdfCoreState.UploadMessage}</p>
                     </div>
                     <table className="table-fixed border-collapse mx-auto mb-8 max-sm:mb-7 text-[1.2rem] max-sm:text-[1.1rem]">
                       <tbody>
@@ -185,20 +185,20 @@ export default function PdfMerger(): ReactElement {
                             <td className="pb-[0.8rem] max-sm:pb-[0.65rem] text-center pr-4">
                               {pdfMergerState.UploadedFiles.indexOf(file) > 0 && (
                                 <span
-                                  className="px-2 hover:text-white cursor-pointer fa-solid fa-arrow-up"
+                                  className="px-2 hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-md hover:shadow hover:shadow-[#23272F] dark:hover:shadow-[#ffffffa6] p-1 cursor-pointer fa-solid fa-arrow-up"
                                   title="Move File Up"
                                   onClick={() => moveFileUp(file)}
                                 ></span>
                               )}
                               {pdfMergerState.UploadedFiles.indexOf(file) < pdfMergerState.UploadedFiles.length - 1 && (
                                 <span
-                                  className="px-2 hover:text-white cursor-pointer fa-solid fa-arrow-down"
+                                  className="px-2 hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-md hover:shadow hover:shadow-[#23272F] dark:hover:shadow-[#ffffffa6] p-1 cursor-pointer fa-solid fa-arrow-down"
                                   title="Move File Down"
                                   onClick={() => moveFileDown(file)}
                                 ></span>
                               )}
                               <span
-                                className="px-2 hover:text-white cursor-pointer fa-solid fa-xmark"
+                                className="px-2 hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-md hover:shadow hover:shadow-[#23272F] dark:hover:shadow-[#ffffffa6] p-1 cursor-pointer fa-solid fa-xmark"
                                 title="Remove File"
                                 onClick={() => removeFile(file)}
                               ></span>

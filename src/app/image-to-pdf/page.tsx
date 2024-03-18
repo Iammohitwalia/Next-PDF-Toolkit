@@ -118,7 +118,7 @@ export default function ImageToPdf(): ReactElement {
     return (
       <>
         <main className="h-full flex flex-col justify-center items-center">
-          <div className="h-[8rem] flex flex-col justify-center items-center text-center max-sm:mb-5 mt-14 max-sm:mt-5 px-4 text-6xl max-sm:text-[2.5rem] font-sans">
+          <div className="font-bold tracking-wide h-[8rem] flex flex-col justify-center items-center text-center max-sm:mb-5 mt-14 max-sm:mt-5 px-4 text-6xl max-sm:text-[2.5rem] font-sans">
             Image To PDF Converter
           </div>
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
@@ -134,7 +134,7 @@ export default function ImageToPdf(): ReactElement {
           {pdfCoreState.IsUploadComplete && (
             <div className="flex flex-row max-sm:flex-col justify-center items-center text-center mt-16 max-sm:-mt-4 mb-14 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
               <div className="mx-12 max-sm:mb-8">
-                <p className="px-6 mb-5">{pdfCoreState.UploadMessage}</p>
+                <p className="font-semibold px-6 mb-5">{pdfCoreState.UploadMessage}</p>
                 <div className="flex justify-center items-center text-center mb-3">
                   <Image
                     src={imageToPdfState.PreviewImageUrl}
@@ -151,7 +151,7 @@ export default function ImageToPdf(): ReactElement {
                 </div>
                 <p className="text-[1.3rem] max-sm:text-[1.1rem]">{imageToPdfState.UploadedFile!.Content.name}</p>
                 <span
-                  className="hover:text-white cursor-pointer fa-solid fa-xmark text-[1.5rem] max-sm:text-[1.3rem] mt-1"
+                  className="hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-md hover:shadow hover:shadow-[#23272F] dark:hover:shadow-[#ffffffa6] p-1 cursor-pointer fa-solid fa-xmark text-[1.5rem] max-sm:text-[1.3rem] mt-1"
                   title="Remove Image"
                   onClick={removeImage}
                 ></span>

@@ -14,7 +14,7 @@ export default function UploadContainer(props: UploadContainerProps): ReactEleme
     <>
       <div>
         <div className="h-[6rem] flex flex-col justify-center items-center mt-14 max-sm:-mt-6 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
-          <div>
+          <div className="font-semibold">
             {props.UploadType === "PDF"
               ? props.IsMultipleUpload
                 ? "Upload your PDF files"
