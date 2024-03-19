@@ -90,7 +90,6 @@ export default function PdfEncryptor(): ReactElement {
 
   function removeFile(): void {
     dispatch(setIsUploadComplete(false));
-    dispatch(setIsUploadInitiated(false));
     dispatch(setIsUploadFailed(true));
     dispatch(setUploadMessage("PDF file deleted."));
     dispatch(setUploadErrorMessage("You have to upload again."));
@@ -146,11 +145,9 @@ export default function PdfEncryptor(): ReactElement {
     let submitMessage: string = "Encrypting the PDF file... ⏳";
     dispatch(setSubmitMessage(submitMessage));
     setPdfEncryptorState((prev) => ({ ...prev, IsEncryptonInitiated: true }));
-    await delay(1500);
+    await delay(1000);
     setPdfEncryptorState((prev) => ({ ...prev, IsEncryptonComplete: true }));
   }
-
-  async function downloadFile(): Promise<void> {}
 
   if (
     !loading &&

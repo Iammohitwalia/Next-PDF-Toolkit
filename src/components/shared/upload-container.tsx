@@ -29,6 +29,13 @@ export default function UploadContainer(props: UploadContainerProps): ReactEleme
               : "Limit - 1 Image / 20 MB"}
           </div>
         </div>
+
+        {props.UploadType === "Image" && (
+          <div className="max-sm:-mt-[6px] flex flex-col justify-center items-center text-center text-xl max-sm:text-[1.2rem] font-sans">
+            Allowed Formats: PNG, JPG & JPEG
+          </div>
+        )}
+
         <FilePicker
           UploadType={props.UploadType}
           IsMultiple={props.IsMultipleUpload}

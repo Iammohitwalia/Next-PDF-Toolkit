@@ -134,13 +134,16 @@ export default function PdfMerger(): ReactElement {
     setPdfMergerState((prev) => ({ ...prev, IsMergeInitiated: true }));
 
     const mergedPdfUrl: string = await mergePdfs(pdfMergerState.UploadedFiles);
-    dispatch(setFinalPdfUrl({ PdfFilename: "MergedPDF", PdfUrl: mergedPdfUrl }));
-    await delay(1500);
+    dispatch(
+      setFinalPdfUrl({
+        PdfFilename: "Merged PDF",
+        PdfUrl: mergedPdfUrl
+      })
+    );
+    await delay(1000);
 
     setPdfMergerState((prev) => ({ ...prev, IsMergeComplete: true }));
   }
-
-  async function downloadFile(): Promise<void> {}
 
   if (!loading && !pdfCoreState.IsUploadInitiated && !pdfMergerState.IsMergeInitiated && !pdfMergerState.IsMergeComplete) {
     return (

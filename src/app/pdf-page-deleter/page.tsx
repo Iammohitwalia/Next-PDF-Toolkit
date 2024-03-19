@@ -23,11 +23,8 @@ import UploadStateContainer from "@/components/shared/upload-state-container";
 import ActionStateContainer from "@/components/shared/action-state-container";
 import DownloadContainer from "@/components/shared/download-container";
 import { cascadiaCode } from "@/components/utils/fonts";
-import {
-  deletePagesFromPdf,
-  getPageNumbersToDelete,
-  getTotalPagesFromPdf
-} from "@/components/pdf-page-deleter/pdf-page-deleter-core";
+import { deletePagesFromPdf, getPageNumbersToDelete } from "@/components/pdf-page-deleter/pdf-page-deleter-core";
+import { getTotalPagesFromPdf } from "@/components/pdf-core/pdf-core-shared";
 
 export default function PdfPageDeleter(): ReactElement {
   const dispatch = useAppDispatch();
@@ -100,7 +97,6 @@ export default function PdfPageDeleter(): ReactElement {
 
   function removeFile(): void {
     dispatch(setIsUploadComplete(false));
-    dispatch(setIsUploadInitiated(false));
     dispatch(setIsUploadFailed(true));
     dispatch(setUploadMessage("PDF file deleted."));
     dispatch(setUploadErrorMessage("You have to upload again."));
@@ -156,13 +152,16 @@ export default function PdfPageDeleter(): ReactElement {
       await pdfPageDelState.UploadedFile!.Content.arrayBuffer(),
       pageNumbersToDelete
     );
-    dispatch(setFinalPdfUrl({ PdfFilename: "ModifiedPDF", PdfUrl: pdfWithDeletedPagesUrl }));
-    await delay(1500);
+    dispatch(
+      setFinalPdfUrl({
+        PdfFilename: `${pdfPageDelState.UploadedFile!.Content.name} (M)`,
+        PdfUrl: pdfWithDeletedPagesUrl
+      })
+    );
+    await delay(1000);
 
     setPdfPageDelState((prev) => ({ ...prev, IsDeletionComplete: true }));
   }
-
-  async function downloadFile(): Promise<void> {}
 
   if (
     !loading &&

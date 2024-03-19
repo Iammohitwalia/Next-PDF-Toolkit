@@ -7,6 +7,7 @@ import { ProcessedFile } from "@/components/models/processed-file";
 import { useAppDispatch, useAppSelector } from "@/lib/redux-hooks";
 import {
   refreshCoreState,
+  setFinalPdfUrl,
   setIsUploadComplete,
   setIsUploadFailed,
   setIsUploadInitiated,
@@ -25,6 +26,8 @@ import {
   PageExtractorValidatorResult,
   validatePagesToExtract
 } from "@/components/pdf-page-extractor/page-extractor-validator";
+import { extractPagesFromPdf, getPageNumbersToExtract } from "@/components/pdf-page-extractor/pdf-page-extractor-core";
+import { getTotalPagesFromPdf } from "@/components/pdf-core/pdf-core-shared";
 
 export default function PdfPageExtractor(): ReactElement {
   const dispatch = useAppDispatch();
@@ -73,7 +76,7 @@ export default function PdfPageExtractor(): ReactElement {
           return;
         }
 
-        let totalPages: number = 10;
+        const totalPages: number = await getTotalPagesFromPdf(await processedFile.Content.arrayBuffer());
 
         if (totalPages === 1) {
           handleFailedUpload("That PDF file has only 1 page, which is not enough! It must have at least 2 pages.");
@@ -97,7 +100,6 @@ export default function PdfPageExtractor(): ReactElement {
 
   function removeFile(): void {
     dispatch(setIsUploadComplete(false));
-    dispatch(setIsUploadInitiated(false));
     dispatch(setIsUploadFailed(true));
     dispatch(setUploadMessage("PDF file deleted."));
     dispatch(setUploadErrorMessage("You have to upload again."));
@@ -147,11 +149,22 @@ export default function PdfPageExtractor(): ReactElement {
     }
     dispatch(setSubmitMessage(submitMessage));
     setPdfPageExtrState((prev) => ({ ...prev, IsExtractionInitiated: true }));
-    await delay(1500);
+
+    const pageNumbersToExtract: number[] = getPageNumbersToExtract(pdfPageExtrState.PagesToExtract);
+    const pdfWithExtractedPagesUrl: string = await extractPagesFromPdf(
+      await pdfPageExtrState.UploadedFile!.Content.arrayBuffer(),
+      pageNumbersToExtract
+    );
+    dispatch(
+      setFinalPdfUrl({
+        PdfFilename: `${pdfPageExtrState.UploadedFile!.Content.name} (M)`,
+        PdfUrl: pdfWithExtractedPagesUrl
+      })
+    );
+    await delay(1000);
+
     setPdfPageExtrState((prev) => ({ ...prev, IsExtractionComplete: true }));
   }
-
-  async function downloadFile(): Promise<void> {}
 
   if (
     !loading &&

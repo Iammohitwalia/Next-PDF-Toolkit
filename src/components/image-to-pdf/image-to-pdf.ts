@@ -17,7 +17,7 @@ export const initialImageToPdfState: ImageToPdfState = {
   IsConversionComplete: false,
   IsConversionInitiated: false,
   MaxSizeAllowed: 20971520,
-  FileTypesAllowed: ["image/png", "image/jpg", "image/jpeg", "image/svg+xml"],
+  FileTypesAllowed: ["image/png", "image/jpg", "image/jpeg"],
   ImageOrientation: "",
   PreviewImageUrl: ""
 };

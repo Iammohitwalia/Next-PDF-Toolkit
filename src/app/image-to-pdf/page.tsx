@@ -6,6 +6,7 @@ import { ProcessedFile } from "@/components/models/processed-file";
 import { useAppDispatch, useAppSelector } from "@/lib/redux-hooks";
 import {
   refreshCoreState,
+  setFinalPdfUrl,
   setIsUploadComplete,
   setIsUploadFailed,
   setIsUploadInitiated,
@@ -21,6 +22,7 @@ import DownloadContainer from "@/components/shared/download-container";
 import { ImageOrientations, ImageToPdfState, initialImageToPdfState } from "@/components/image-to-pdf/image-to-pdf";
 import Image from "next/image";
 import { getImageOrientation } from "@/components/image-to-pdf/image-to-pdf-utils";
+import { convertImageToPdf } from "@/components/image-to-pdf/image-to-pdf-core";
 
 export default function ImageToPdf(): ReactElement {
   const dispatch = useAppDispatch();
@@ -92,7 +94,6 @@ export default function ImageToPdf(): ReactElement {
 
   function removeImage(): void {
     dispatch(setIsUploadComplete(false));
-    dispatch(setIsUploadInitiated(false));
     dispatch(setIsUploadFailed(true));
     dispatch(setUploadMessage("Image deleted."));
     dispatch(setUploadErrorMessage("You have to upload again."));
@@ -103,11 +104,26 @@ export default function ImageToPdf(): ReactElement {
     let submitMessage: string = "Converting the Image to a PDF file... ⏳";
     dispatch(setSubmitMessage(submitMessage));
     setImageToPdfState((prev) => ({ ...prev, IsConversionInitiated: true }));
-    await delay(1500);
-    setImageToPdfState((prev) => ({ ...prev, IsConversionComplete: true }));
-  }
 
-  async function downloadFile(): Promise<void> {}
+    const pdfWithImageUrl: string | null = await convertImageToPdf(imageToPdfState.UploadedFile!);
+    await delay(1000);
+
+    if (pdfWithImageUrl !== null) {
+      dispatch(
+        setFinalPdfUrl({
+          PdfFilename: `${imageToPdfState.UploadedFile!.Content.name} (PDF)`,
+          PdfUrl: pdfWithImageUrl
+        })
+      );
+      setImageToPdfState((prev) => ({ ...prev, IsConversionComplete: true }));
+    } else {
+      dispatch(setIsUploadComplete(false));
+      dispatch(setIsUploadFailed(true));
+      dispatch(setUploadMessage("Something went wrong! ❌"));
+      dispatch(setUploadErrorMessage("Please upload the image again."));
+      setImageToPdfState((prev) => ({ ...prev, IsConversionInitiated: false, UploadedFile: null }));
+    }
+  }
 
   if (
     !loading &&
