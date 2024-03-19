@@ -118,7 +118,7 @@ export default function ImageToPdf(): ReactElement {
     return (
       <>
         <main className="h-full flex flex-col justify-center items-center">
-          <div className="font-bold tracking-wide h-[8rem] flex flex-col justify-center items-center text-center max-sm:mb-5 mt-14 max-sm:mt-5 px-4 text-6xl max-sm:text-[2.5rem] font-sans">
+          <div className="font-bold tracking-wide h-[8rem] flex flex-col justify-center items-center text-center max-sm:mb-5 mt-14 max-sm:mt-5 px-10 text-6xl max-sm:text-[2.5rem] font-sans">
             Image To PDF Converter
           </div>
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
