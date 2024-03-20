@@ -14,5 +14,5 @@ A Web Application built with NextJS and TailwindCSS that has various tools for m
 
 ## Libraries/Packages Used
 
-- [PDF-Lib](https://www.npmjs.com/package/pdf-lib?activeTab=readme) (Used in: Merger, Page Deleter, Page Extractor & Image Converter)
-- [jsPDF](https://www.npmjs.com/package/jspdf?activeTab=readme) (Used in: Encryptor)
+- [PDF-Lib](https://www.npmjs.com/package/pdf-lib) (Used in: Merger, Page Deleter, Page Extractor & Image Converter)
+- [PDF-Lib-Plus-Encrypt](https://www.npmjs.com/package/pdf-lib-plus-encrypt) (Used in: Encryptor)
