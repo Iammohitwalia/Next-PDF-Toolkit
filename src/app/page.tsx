@@ -17,7 +17,7 @@ export default function Home(): ReactElement {
               PDF Merger
             </button>
           </Link>
-          <Link href="/pdf-extractor">
+          <Link href="/pdf-page-extractor">
             <button className="m-5 max-sm:m-3 rounded-xl bg-[#074DA6] dark:bg-[#05336E] hover:bg-[#05346e] dark:hover:bg-[#04234D] hover:ring hover:ring-[#0091ff] dark:hover:ring-[#074DA6] text-gray-200 p-2 h-32 w-40 max-sm:h-[7rem] max-sm:w-[8.5rem]">
               PDF Page Extractor
             </button>

@@ -6,14 +6,16 @@ import "../../public/fontawesome/css/brands.min.css";
 import "../../public/fontawesome/css/solid.min.css";
 import ReduxStoreProvider from "./redux-store-provider";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   minimumScale: 1,
   maximumScale: 1,
-  userScalable: false
+  userScalable: false,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F2F3F5" },
+    { media: "(prefers-color-scheme: dark)", color: "#181818" }
+  ]
 };
 
 export const metadata: Metadata = {
@@ -84,9 +86,7 @@ export default function RootLayout({
         <meta property="og:image" content="https://next-pdftoolkit.subhamk.com/android-chrome-192x192.png" />
       </head> */}
 
-        <body
-          className={`${inter.className} max-w-[100vw] overflow-x-hidden bg-[#F2F3F5] dark:bg-[#181818] text-[#404756] dark:text-[#ffffffa6]`}
-        >
+        <body className="max-w-[100vw] overflow-x-hidden bg-[#F2F3F5] dark:bg-[#181818] text-[#404756] dark:text-[#ffffffa6]">
           {children}
         </body>
       </html>
