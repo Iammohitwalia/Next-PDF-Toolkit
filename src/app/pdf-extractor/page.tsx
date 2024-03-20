@@ -155,14 +155,11 @@ export default function PdfPageExtractor(): ReactElement {
       await pdfPageExtrState.UploadedFile!.Content.arrayBuffer(),
       pageNumbersToExtract
     );
-    dispatch(
-      setFinalPdfUrl({
-        PdfFilename: `${pdfPageExtrState.UploadedFile!.Content.name} (M)`,
-        PdfUrl: pdfWithExtractedPagesUrl
-      })
-    );
+    const fileName: string = pdfPageExtrState.UploadedFile!.Content.name;
+    const finalPdfFileName: string = `${fileName.substring(0, fileName.lastIndexOf("."))} (Extracted)`;
     await delay(1000);
 
+    dispatch(setFinalPdfUrl({ PdfFilename: finalPdfFileName, PdfUrl: pdfWithExtractedPagesUrl }));
     setPdfPageExtrState((prev) => ({ ...prev, IsExtractionComplete: true }));
   }
 

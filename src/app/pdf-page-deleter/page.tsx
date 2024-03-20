@@ -152,14 +152,11 @@ export default function PdfPageDeleter(): ReactElement {
       await pdfPageDelState.UploadedFile!.Content.arrayBuffer(),
       pageNumbersToDelete
     );
-    dispatch(
-      setFinalPdfUrl({
-        PdfFilename: `${pdfPageDelState.UploadedFile!.Content.name} (M)`,
-        PdfUrl: pdfWithDeletedPagesUrl
-      })
-    );
+    const fileName: string = pdfPageDelState.UploadedFile!.Content.name;
+    const finalPdfFileName: string = `${fileName.substring(0, fileName.lastIndexOf("."))} (Modified)`;
     await delay(1000);
 
+    dispatch(setFinalPdfUrl({ PdfFilename: finalPdfFileName, PdfUrl: pdfWithDeletedPagesUrl }));
     setPdfPageDelState((prev) => ({ ...prev, IsDeletionComplete: true }));
   }
 

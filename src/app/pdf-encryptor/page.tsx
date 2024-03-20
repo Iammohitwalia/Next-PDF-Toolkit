@@ -7,6 +7,7 @@ import { ProcessedFile } from "@/components/models/processed-file";
 import { useAppDispatch, useAppSelector } from "@/lib/redux-hooks";
 import {
   refreshCoreState,
+  setFinalPdfUrl,
   setIsUploadComplete,
   setIsUploadFailed,
   setIsUploadInitiated,
@@ -25,6 +26,7 @@ import {
   PdfEncryptorState,
   initialPdfEncryptorState
 } from "@/components/pdf-encryptor/pdf-encryptor";
+import { encryptPdf } from "@/components/pdf-encryptor/pdf-encryptor-core";
 
 export default function PdfEncryptor(): ReactElement {
   const dispatch = useAppDispatch();
@@ -145,7 +147,16 @@ export default function PdfEncryptor(): ReactElement {
     let submitMessage: string = "Encrypting the PDF file... ⏳";
     dispatch(setSubmitMessage(submitMessage));
     setPdfEncryptorState((prev) => ({ ...prev, IsEncryptonInitiated: true }));
+
+    const encryptedPdfUrl: string = await encryptPdf(
+      await pdfEncryptorState.UploadedFile!.Content.arrayBuffer(),
+      pdfEncryptorState.Password
+    );
+    const fileName: string = pdfEncryptorState.UploadedFile!.Content.name;
+    const finalPdfFileName: string = `${fileName.substring(0, fileName.lastIndexOf("."))} (Encrypted)`;
     await delay(1000);
+
+    dispatch(setFinalPdfUrl({ PdfFilename: finalPdfFileName, PdfUrl: encryptedPdfUrl }));
     setPdfEncryptorState((prev) => ({ ...prev, IsEncryptonComplete: true }));
   }
 

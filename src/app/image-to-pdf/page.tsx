@@ -106,15 +106,12 @@ export default function ImageToPdf(): ReactElement {
     setImageToPdfState((prev) => ({ ...prev, IsConversionInitiated: true }));
 
     const pdfWithImageUrl: string | null = await convertImageToPdf(imageToPdfState.UploadedFile!);
+    const fileName: string = imageToPdfState.UploadedFile!.Content.name;
+    const finalPdfFileName: string = `${fileName.substring(0, fileName.lastIndexOf("."))} (PDF)`;
     await delay(1000);
 
     if (pdfWithImageUrl !== null) {
-      dispatch(
-        setFinalPdfUrl({
-          PdfFilename: `${imageToPdfState.UploadedFile!.Content.name} (PDF)`,
-          PdfUrl: pdfWithImageUrl
-        })
-      );
+      dispatch(setFinalPdfUrl({ PdfFilename: finalPdfFileName, PdfUrl: pdfWithImageUrl }));
       setImageToPdfState((prev) => ({ ...prev, IsConversionComplete: true }));
     } else {
       dispatch(setIsUploadComplete(false));

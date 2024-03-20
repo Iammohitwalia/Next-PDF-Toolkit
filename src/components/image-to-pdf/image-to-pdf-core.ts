@@ -1,4 +1,4 @@
-import { PDFDocument, PDFImage, PDFPage, PageSizes } from "pdf-lib";
+import { PDFDocument, PDFImage, PDFPage } from "pdf-lib";
 import { ProcessedFile } from "../models/processed-file";
 
 export async function convertImageToPdf(imageFile: ProcessedFile): Promise<string | null> {

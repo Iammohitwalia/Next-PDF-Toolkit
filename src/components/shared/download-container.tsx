@@ -11,7 +11,7 @@ export default function DownloadContainer(props: DownloadContainerProps): ReactE
   const pdfCoreState = useAppSelector((state) => state.pdfCore);
 
   function downloadPdfFile(): void {
-    let link = document.createElement("a");
+    let link: HTMLAnchorElement = document.createElement("a");
     link.download = pdfCoreState.FinalPdfFilename;
     link.href = pdfCoreState.FinalPdfUrl;
     document.body.appendChild(link);
