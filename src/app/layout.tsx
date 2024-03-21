@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import "../../public/fontawesome/css/fontawesome.min.css";
 import "../../public/fontawesome/css/brands.min.css";
