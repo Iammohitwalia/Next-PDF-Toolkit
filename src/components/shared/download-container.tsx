@@ -9,15 +9,6 @@ interface DownloadContainerProps {
 export default function DownloadContainer(props: DownloadContainerProps): ReactElement {
   const pdfCoreState = useAppSelector((state) => state.pdfCore);
 
-  function downloadPdfFile(): void {
-    let link: HTMLAnchorElement = document.createElement("a");
-    link.download = pdfCoreState.FinalPdfFilename;
-    link.href = pdfCoreState.FinalPdfUrl;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
   return (
     <>
       <main className="h-full flex flex-col justify-center items-center">
@@ -35,11 +26,10 @@ export default function DownloadContainer(props: DownloadContainerProps): ReactE
           <div className="text-5xl max-sm:text-[2.2rem]">🎉 🎊</div>
         </div>
         <div className="h-[6rem] max-sm:h-[5rem]">
-          <button
-            className="text-3xl max-sm:text-2xl rounded-xl bg-green-700 dark:bg-green-900 hover:bg-green-900 dark:hover:bg-green-950 disabled:bg-zinc-400 dark:disabled:bg-zinc-800 hover:ring hover:ring-green-500 dark:hover:ring-green-700 disabled:ring-transparent dark:disabled:ring-transparent text-gray-200 disabled:text-zinc-300 dark:disabled:text-zinc-600 p-2 h-[4.5rem] w-56 max-sm:h-16 max-sm:w-44"
-            onClick={downloadPdfFile}
-          >
-            <i className="fa-solid fa-download mr-3"></i>Download
+          <button className="text-3xl max-sm:text-2xl rounded-xl bg-green-700 dark:bg-green-900 hover:bg-green-900 dark:hover:bg-green-950 disabled:bg-zinc-400 dark:disabled:bg-zinc-800 hover:ring hover:ring-green-500 dark:hover:ring-green-700 disabled:ring-transparent dark:disabled:ring-transparent text-gray-200 disabled:text-zinc-300 dark:disabled:text-zinc-600 p-2 h-[4.5rem] w-56 max-sm:h-16 max-sm:w-44">
+            <a download={pdfCoreState.FinalPdfFilename} href={pdfCoreState.FinalPdfUrl}>
+              <i className="fa-solid fa-download mr-3"></i>Download
+            </a>
           </button>
         </div>
         <div className="h-[6rem]">
