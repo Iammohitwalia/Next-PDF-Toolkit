@@ -6,6 +6,7 @@ import { ProcessedFile } from "@/components/models/processed-file";
 import { useAppDispatch, useAppSelector } from "@/lib/redux-hooks";
 import {
   refreshCoreState,
+  setDownloadMessage,
   setFinalPdfUrl,
   setIsUploadComplete,
   setIsUploadFailed,
@@ -111,6 +112,7 @@ export default function ImageToPdf(): ReactElement {
     await delay(1000);
 
     if (pdfWithImageUrl !== null) {
+      dispatch(setDownloadMessage("Successfully Converted the Image to a PDF File. ✅"));
       dispatch(setFinalPdfUrl({ PdfFilename: finalPdfFileName, PdfUrl: pdfWithImageUrl }));
       setImageToPdfState((prev) => ({ ...prev, IsConversionComplete: true }));
     } else {
@@ -137,13 +139,9 @@ export default function ImageToPdf(): ReactElement {
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
             <UploadContainer UploadType="Image" IsMultipleUpload={false} UploadFiles={uploadFilesInitializer} />
           )}
-          {pdfCoreState.IsUploadFailed && (
-            <UploadFailedContainer
-              UploadMessage={pdfCoreState.UploadMessage}
-              UploadErrorMessage={pdfCoreState.UploadErrorMessage}
-              RefreshApp={refreshApp}
-            />
-          )}
+
+          {pdfCoreState.IsUploadFailed && <UploadFailedContainer RefreshApp={refreshApp} />}
+
           {pdfCoreState.IsUploadComplete && (
             <div className="flex flex-row max-sm:flex-col justify-center items-center text-center mt-16 max-sm:-mt-4 mb-14 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
               <div className="mx-12 max-sm:mb-8">
@@ -198,7 +196,7 @@ export default function ImageToPdf(): ReactElement {
   if (!loading && pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
     return (
       <>
-        <UploadStateContainer UploadMessage={pdfCoreState.UploadMessage} />
+        <UploadStateContainer />
       </>
     );
   }
@@ -206,7 +204,7 @@ export default function ImageToPdf(): ReactElement {
   if (!loading && imageToPdfState.IsConversionInitiated && !imageToPdfState.IsConversionComplete) {
     return (
       <>
-        <ActionStateContainer SubmitMessage={pdfCoreState.SubmitMessage} />
+        <ActionStateContainer />
       </>
     );
   }
@@ -214,11 +212,7 @@ export default function ImageToPdf(): ReactElement {
   if (!loading && imageToPdfState.IsConversionComplete) {
     return (
       <>
-        <DownloadContainer
-          ToolName="Image To PDF Converter"
-          DownloadMessage="Successfully Converted the Image to a PDF File. ✅"
-          RefreshApp={refreshApp}
-        />
+        <DownloadContainer ToolName="Image To PDF Converter" RefreshApp={refreshApp} />
       </>
     );
   }

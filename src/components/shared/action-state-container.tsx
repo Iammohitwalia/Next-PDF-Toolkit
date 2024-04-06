@@ -1,18 +1,17 @@
 import { ReactElement } from "react";
 import { CircularSpinnerLarge } from "./spinners";
+import { useAppSelector } from "@/lib/redux-hooks";
 
-interface ActionStateContainerProps {
-  SubmitMessage: string;
-}
+export default function ActionStateContainer(): ReactElement {
+  const pdfCoreState = useAppSelector((state) => state.pdfCore);
 
-export default function ActionStateContainer(props: ActionStateContainerProps): ReactElement {
   return (
     <>
       <main className="h-screen flex flex-col justify-center items-center text-center">
         <div className="font-semibold mb-8 max-sm:mb-5 mx-12 text-4xl max-sm:text-[1.8rem] font-sans leading-[3.5rem]">
-          {props.SubmitMessage}
+          {pdfCoreState.SubmitMessage}
         </div>
-        {props.SubmitMessage.length > 0 && <CircularSpinnerLarge />}
+        {pdfCoreState.SubmitMessage.length > 0 && <CircularSpinnerLarge />}
       </main>
     </>
   );

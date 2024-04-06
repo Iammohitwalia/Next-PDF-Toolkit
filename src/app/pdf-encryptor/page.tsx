@@ -7,6 +7,7 @@ import { ProcessedFile } from "@/components/models/processed-file";
 import { useAppDispatch, useAppSelector } from "@/lib/redux-hooks";
 import {
   refreshCoreState,
+  setDownloadMessage,
   setFinalPdfUrl,
   setIsUploadComplete,
   setIsUploadFailed,
@@ -156,6 +157,7 @@ export default function PdfEncryptor(): ReactElement {
     const finalPdfFileName: string = `${fileName.substring(0, fileName.lastIndexOf("."))} (Encrypted)`;
     await delay(1000);
 
+    dispatch(setDownloadMessage("Successfully Encrypted the PDF File. ✅"));
     dispatch(setFinalPdfUrl({ PdfFilename: finalPdfFileName, PdfUrl: encryptedPdfUrl }));
     setPdfEncryptorState((prev) => ({ ...prev, IsEncryptonComplete: true }));
   }
@@ -175,13 +177,9 @@ export default function PdfEncryptor(): ReactElement {
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
             <UploadContainer UploadType="PDF" IsMultipleUpload={false} UploadFiles={uploadFilesInitializer} />
           )}
-          {pdfCoreState.IsUploadFailed && (
-            <UploadFailedContainer
-              UploadMessage={pdfCoreState.UploadMessage}
-              UploadErrorMessage={pdfCoreState.UploadErrorMessage}
-              RefreshApp={refreshApp}
-            />
-          )}
+
+          {pdfCoreState.IsUploadFailed && <UploadFailedContainer RefreshApp={refreshApp} />}
+
           {pdfCoreState.IsUploadComplete && (
             <div className="flex flex-col justify-center items-center text-center mt-16 mb-8 max-sm:-mt-4 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
               <div>
@@ -255,7 +253,7 @@ export default function PdfEncryptor(): ReactElement {
   if (!loading && pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
     return (
       <>
-        <UploadStateContainer UploadMessage={pdfCoreState.UploadMessage} />
+        <UploadStateContainer />
       </>
     );
   }
@@ -263,7 +261,7 @@ export default function PdfEncryptor(): ReactElement {
   if (!loading && pdfEncryptorState.IsEncryptonInitiated && !pdfEncryptorState.IsEncryptonComplete) {
     return (
       <>
-        <ActionStateContainer SubmitMessage={pdfCoreState.SubmitMessage} />
+        <ActionStateContainer />
       </>
     );
   }
@@ -271,11 +269,7 @@ export default function PdfEncryptor(): ReactElement {
   if (!loading && pdfEncryptorState.IsEncryptonComplete) {
     return (
       <>
-        <DownloadContainer
-          ToolName="PDF Encryptor"
-          DownloadMessage="Successfully Encrypted the PDF File. ✅"
-          RefreshApp={refreshApp}
-        />
+        <DownloadContainer ToolName="PDF Encryptor" RefreshApp={refreshApp} />
       </>
     );
   }

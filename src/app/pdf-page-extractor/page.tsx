@@ -7,6 +7,7 @@ import { ProcessedFile } from "@/components/models/processed-file";
 import { useAppDispatch, useAppSelector } from "@/lib/redux-hooks";
 import {
   refreshCoreState,
+  setDownloadMessage,
   setFinalPdfUrl,
   setIsUploadComplete,
   setIsUploadFailed,
@@ -141,12 +142,11 @@ export default function PdfPageExtractor(): ReactElement {
   }
 
   async function submitFile(): Promise<void> {
-    let submitMessage: string = "";
-    if (pdfPageExtrState.TotalPagesToExtract == 1) {
-      submitMessage = "Extracting 1 Page from the PDF file... ⏳";
-    } else {
-      submitMessage = `Extracting ${pdfPageExtrState.TotalPagesToExtract} Pages from the PDF file... ⏳`;
-    }
+    const submitMessage: string =
+      pdfPageExtrState.TotalPagesToExtract == 1
+        ? "Extracting 1 Page from the PDF file... ⏳"
+        : `Extracting ${pdfPageExtrState.TotalPagesToExtract} Pages from the PDF file... ⏳`;
+
     dispatch(setSubmitMessage(submitMessage));
     setPdfPageExtrState((prev) => ({ ...prev, IsExtractionInitiated: true }));
 
@@ -159,6 +159,12 @@ export default function PdfPageExtractor(): ReactElement {
     const finalPdfFileName: string = `${fileName.substring(0, fileName.lastIndexOf("."))} (Extracted)`;
     await delay(1000);
 
+    const downloadMessage: string =
+      pdfPageExtrState.TotalPagesToExtract == 1
+        ? "Successfully Extracted 1 Page from the PDF File. ✅"
+        : `Successfully Extracted ${pdfPageExtrState.TotalPagesToExtract} Pages from the PDF File. ✅`;
+
+    dispatch(setDownloadMessage(downloadMessage));
     dispatch(setFinalPdfUrl({ PdfFilename: finalPdfFileName, PdfUrl: pdfWithExtractedPagesUrl }));
     setPdfPageExtrState((prev) => ({ ...prev, IsExtractionComplete: true }));
   }
@@ -178,13 +184,9 @@ export default function PdfPageExtractor(): ReactElement {
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
             <UploadContainer UploadType="PDF" IsMultipleUpload={false} UploadFiles={uploadFilesInitializer} />
           )}
-          {pdfCoreState.IsUploadFailed && (
-            <UploadFailedContainer
-              UploadMessage={pdfCoreState.UploadMessage}
-              UploadErrorMessage={pdfCoreState.UploadErrorMessage}
-              RefreshApp={refreshApp}
-            />
-          )}
+
+          {pdfCoreState.IsUploadFailed && <UploadFailedContainer RefreshApp={refreshApp} />}
+
           {pdfCoreState.IsUploadComplete && (
             <div className="flex flex-col justify-center items-center text-center mt-16 mb-8 max-sm:-mt-4 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
               <div>
@@ -250,7 +252,7 @@ export default function PdfPageExtractor(): ReactElement {
   if (!loading && pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
     return (
       <>
-        <UploadStateContainer UploadMessage={pdfCoreState.UploadMessage} />
+        <UploadStateContainer />
       </>
     );
   }
@@ -258,7 +260,7 @@ export default function PdfPageExtractor(): ReactElement {
   if (!loading && pdfPageExtrState.IsExtractionInitiated && !pdfPageExtrState.IsExtractionComplete) {
     return (
       <>
-        <ActionStateContainer SubmitMessage={pdfCoreState.SubmitMessage} />
+        <ActionStateContainer />
       </>
     );
   }
@@ -266,15 +268,7 @@ export default function PdfPageExtractor(): ReactElement {
   if (!loading && pdfPageExtrState.IsExtractionComplete) {
     return (
       <>
-        <DownloadContainer
-          ToolName="PDF Page Extractor"
-          DownloadMessage={
-            pdfPageExtrState.TotalPagesToExtract == 1
-              ? "Successfully Extracted 1 Page from the PDF File. ✅"
-              : `Successfully Extracted ${pdfPageExtrState.TotalPagesToExtract} Pages from the PDF File. ✅`
-          }
-          RefreshApp={refreshApp}
-        />
+        <DownloadContainer ToolName="PDF Page Extractor" RefreshApp={refreshApp} />
       </>
     );
   }

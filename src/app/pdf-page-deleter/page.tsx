@@ -7,6 +7,7 @@ import { ProcessedFile } from "@/components/models/processed-file";
 import { useAppDispatch, useAppSelector } from "@/lib/redux-hooks";
 import {
   refreshCoreState,
+  setDownloadMessage,
   setFinalPdfUrl,
   setIsUploadComplete,
   setIsUploadFailed,
@@ -138,12 +139,11 @@ export default function PdfPageDeleter(): ReactElement {
   }
 
   async function submitFile(): Promise<void> {
-    let submitMessage: string = "";
-    if (pdfPageDelState.TotalPagesToDelete == 1) {
-      submitMessage = "Deleting 1 Page from the PDF file... ⏳";
-    } else {
-      submitMessage = `Deleting ${pdfPageDelState.TotalPagesToDelete} Pages from the PDF file... ⏳`;
-    }
+    const submitMessage: string =
+      pdfPageDelState.TotalPagesToDelete == 1
+        ? "Deleting 1 Page from the PDF file... ⏳"
+        : `Deleting ${pdfPageDelState.TotalPagesToDelete} Pages from the PDF file... ⏳`;
+
     dispatch(setSubmitMessage(submitMessage));
     setPdfPageDelState((prev) => ({ ...prev, IsDeletionInitiated: true }));
 
@@ -156,6 +156,12 @@ export default function PdfPageDeleter(): ReactElement {
     const finalPdfFileName: string = `${fileName.substring(0, fileName.lastIndexOf("."))} (Modified)`;
     await delay(1000);
 
+    const downloadMessage: string =
+      pdfPageDelState.TotalPagesToDelete == 1
+        ? "Successfully Deleted 1 Page from the PDF File. ✅"
+        : `Successfully Deleted ${pdfPageDelState.TotalPagesToDelete} Pages from the PDF File. ✅`;
+
+    dispatch(setDownloadMessage(downloadMessage));
     dispatch(setFinalPdfUrl({ PdfFilename: finalPdfFileName, PdfUrl: pdfWithDeletedPagesUrl }));
     setPdfPageDelState((prev) => ({ ...prev, IsDeletionComplete: true }));
   }
@@ -175,13 +181,9 @@ export default function PdfPageDeleter(): ReactElement {
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
             <UploadContainer UploadType="PDF" IsMultipleUpload={false} UploadFiles={uploadFilesInitializer} />
           )}
-          {pdfCoreState.IsUploadFailed && (
-            <UploadFailedContainer
-              UploadMessage={pdfCoreState.UploadMessage}
-              UploadErrorMessage={pdfCoreState.UploadErrorMessage}
-              RefreshApp={refreshApp}
-            />
-          )}
+
+          {pdfCoreState.IsUploadFailed && <UploadFailedContainer RefreshApp={refreshApp} />}
+
           {pdfCoreState.IsUploadComplete && (
             <div className="flex flex-col justify-center items-center text-center mt-16 mb-8 max-sm:-mt-4 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
               <div>
@@ -247,7 +249,7 @@ export default function PdfPageDeleter(): ReactElement {
   if (!loading && pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
     return (
       <>
-        <UploadStateContainer UploadMessage={pdfCoreState.UploadMessage} />
+        <UploadStateContainer />
       </>
     );
   }
@@ -255,7 +257,7 @@ export default function PdfPageDeleter(): ReactElement {
   if (!loading && pdfPageDelState.IsDeletionInitiated && !pdfPageDelState.IsDeletionComplete) {
     return (
       <>
-        <ActionStateContainer SubmitMessage={pdfCoreState.SubmitMessage} />
+        <ActionStateContainer />
       </>
     );
   }
@@ -263,15 +265,7 @@ export default function PdfPageDeleter(): ReactElement {
   if (!loading && pdfPageDelState.IsDeletionComplete) {
     return (
       <>
-        <DownloadContainer
-          ToolName="PDF Page Deleter"
-          DownloadMessage={
-            pdfPageDelState.TotalPagesToDelete == 1
-              ? "Successfully Deleted 1 Page from the PDF File. ✅"
-              : `Successfully Deleted ${pdfPageDelState.TotalPagesToDelete} Pages from the PDF File. ✅`
-          }
-          RefreshApp={refreshApp}
-        />
+        <DownloadContainer ToolName="PDF Page Deleter" RefreshApp={refreshApp} />
       </>
     );
   }

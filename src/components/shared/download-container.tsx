@@ -3,7 +3,6 @@ import { useAppSelector } from "@/lib/redux-hooks";
 
 interface DownloadContainerProps {
   ToolName: string;
-  DownloadMessage: string;
   RefreshApp: () => void;
 }
 
@@ -32,7 +31,7 @@ export default function DownloadContainer(props: DownloadContainerProps): ReactE
           </div>
         )}
         <div className="font-semibold h-[12rem] px-6 flex flex-col justify-center items-center text-center mb-8 mt-5 max-sm:-mt-11 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
-          <div className="mb-5 max-sm:mb-4">{props.DownloadMessage}</div>
+          <div className="mb-5 max-sm:mb-4">{pdfCoreState.DownloadMessage}</div>
           <div className="text-5xl max-sm:text-[2.2rem]">🎉 🎊</div>
         </div>
         <div className="h-[6rem] max-sm:h-[5rem]">

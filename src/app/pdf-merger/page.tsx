@@ -6,6 +6,7 @@ import { ProcessedFile } from "@/components/models/processed-file";
 import { useAppDispatch, useAppSelector } from "@/lib/redux-hooks";
 import {
   refreshCoreState,
+  setDownloadMessage,
   setFinalPdfUrl,
   setIsUploadComplete,
   setIsUploadFailed,
@@ -137,6 +138,7 @@ export default function PdfMerger(): ReactElement {
     const finalPdfFileName: string = "Merged PDF";
     await delay(1000);
 
+    dispatch(setDownloadMessage(`Successfully Merged ${pdfMergerState.UploadedFiles.length} PDF files. ✅`));
     dispatch(setFinalPdfUrl({ PdfFilename: finalPdfFileName, PdfUrl: mergedPdfUrl }));
     setPdfMergerState((prev) => ({ ...prev, IsMergeComplete: true }));
   }
@@ -151,13 +153,9 @@ export default function PdfMerger(): ReactElement {
           {!pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete && !pdfCoreState.IsUploadFailed && (
             <UploadContainer UploadType="PDF" IsMultipleUpload={true} UploadFiles={uploadFilesInitializer} />
           )}
-          {pdfCoreState.IsUploadFailed && (
-            <UploadFailedContainer
-              UploadMessage={pdfCoreState.UploadMessage}
-              UploadErrorMessage={pdfCoreState.UploadErrorMessage}
-              RefreshApp={refreshApp}
-            />
-          )}
+
+          {pdfCoreState.IsUploadFailed && <UploadFailedContainer RefreshApp={refreshApp} />}
+
           {pdfCoreState.IsUploadComplete && (
             <div className="flex flex-col justify-center items-center text-center mt-16 mb-8 max-sm:-mt-4 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
               <div>
@@ -235,7 +233,7 @@ export default function PdfMerger(): ReactElement {
   if (!loading && pdfCoreState.IsUploadInitiated && !pdfCoreState.IsUploadComplete) {
     return (
       <>
-        <UploadStateContainer UploadMessage={pdfCoreState.UploadMessage} />
+        <UploadStateContainer />
       </>
     );
   }
@@ -243,7 +241,7 @@ export default function PdfMerger(): ReactElement {
   if (!loading && pdfMergerState.IsMergeInitiated && !pdfMergerState.IsMergeComplete) {
     return (
       <>
-        <ActionStateContainer SubmitMessage={pdfCoreState.SubmitMessage} />
+        <ActionStateContainer />
       </>
     );
   }
@@ -251,11 +249,7 @@ export default function PdfMerger(): ReactElement {
   if (!loading && pdfMergerState.IsMergeComplete) {
     return (
       <>
-        <DownloadContainer
-          ToolName="PDF Merger"
-          DownloadMessage={`Successfully Merged ${pdfMergerState.UploadedFiles.length} PDF files. ✅`}
-          RefreshApp={refreshApp}
-        />
+        <DownloadContainer ToolName="PDF Merger" RefreshApp={refreshApp} />
       </>
     );
   }

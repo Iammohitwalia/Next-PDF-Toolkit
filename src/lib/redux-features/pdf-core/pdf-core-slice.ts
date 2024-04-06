@@ -29,6 +29,10 @@ export const pdfCoreSlice = createSlice({
       state.SubmitMessage = action.payload;
     },
 
+    setDownloadMessage: (state, action: PayloadAction<string>) => {
+      state.DownloadMessage = action.payload;
+    },
+
     setFinalPdfUrl: (state, action: PayloadAction<{ PdfFilename: string; PdfUrl: string }>) => {
       state.FinalPdfFilename = action.payload.PdfFilename;
       state.FinalPdfUrl = action.payload.PdfUrl;
@@ -54,6 +58,7 @@ export const {
   setUploadMessage,
   setUploadErrorMessage,
   setSubmitMessage,
+  setDownloadMessage,
   setFinalPdfUrl,
   refreshCoreState
 } = pdfCoreSlice.actions;

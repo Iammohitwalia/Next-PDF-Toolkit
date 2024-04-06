@@ -1,18 +1,19 @@
 import { ReactElement } from "react";
+import { useAppSelector } from "@/lib/redux-hooks";
 
 interface UploadFailedContainerProps {
-  UploadMessage: string;
-  UploadErrorMessage: string;
   RefreshApp: () => void;
 }
 
 export default function UploadFailedContainer(props: UploadFailedContainerProps): ReactElement {
+  const pdfCoreState = useAppSelector((state) => state.pdfCore);
+
   return (
     <>
       <div className="flex flex-col justify-center items-center text-center mt-16 mb-8 max-sm:-mt-4 max-sm:mb-7 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
         <div className="mb-14 max-sm:mb-11">
-          <p className="font-semibold px-6">{props.UploadMessage}</p>
-          <p className="mt-7 px-6">{props.UploadErrorMessage}</p>
+          <p className="font-semibold px-6">{pdfCoreState.UploadMessage}</p>
+          <p className="mt-7 px-6">{pdfCoreState.UploadErrorMessage}</p>
           <p className="mt-3 text-5xl max-sm:text-[2.2rem]">😕</p>
         </div>
         <div className="h-[6rem]">
