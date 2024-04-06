@@ -148,7 +148,7 @@ export default function ImageToPdf(): ReactElement {
             <div className="flex flex-row max-sm:flex-col justify-center items-center text-center mt-16 max-sm:-mt-4 mb-14 text-[1.7rem] max-sm:text-[1.55rem] font-sans">
               <div className="mx-12 max-sm:mb-8">
                 <p className="font-semibold px-6 mb-5">{pdfCoreState.UploadMessage}</p>
-                <div className="flex justify-center items-center text-center mb-5">
+                <div className="flex justify-center items-center text-center mb-5 pointer-events-none">
                   <Image
                     src={imageToPdfState.PreviewImageUrl}
                     alt={imageToPdfState.UploadedFile!.Content.name}
@@ -157,6 +157,7 @@ export default function ImageToPdf(): ReactElement {
                     quality={20}
                     loading="eager"
                     priority={true}
+                    onLoad={() => URL.revokeObjectURL(imageToPdfState.PreviewImageUrl)}
                     className={`rounded-3xl shadow-lg shadow-[#404756] dark:shadow-none dark:border-2 dark:border-[#ffffffa6] ${
                       imageToPdfState.ImageOrientation === "Landscape" ? "w-[600px] max-sm:w-64" : "w-80 max-sm:w-32"
                     }`}
