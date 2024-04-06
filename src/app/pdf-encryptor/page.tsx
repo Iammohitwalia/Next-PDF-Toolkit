@@ -100,7 +100,17 @@ export default function PdfEncryptor(): ReactElement {
   }
 
   function updatePassword(password: string): void {
-    setPdfEncryptorState((prev) => ({ ...prev, Password: password }));
+    if (pdfEncryptorState.ReTypedPassword !== "") {
+      setPdfEncryptorState((prev) => ({
+        ...prev,
+        Password: password,
+        ReTypedPassword: "",
+        EncryptorInfo: initialPdfEncryptorState.EncryptorInfo,
+        EncryptorValidator: "EMPTY"
+      }));
+    } else {
+      setPdfEncryptorState((prev) => ({ ...prev, Password: password }));
+    }
   }
 
   function validateEncryptor(password: string): void {
@@ -205,7 +215,7 @@ export default function PdfEncryptor(): ReactElement {
                   <p className="px-6 mb-4">Enter a Password:</p>
                   <input
                     className={`mb-4 border border-[#AEAEAE] rounded-lg font-mono ${cascadiaCode.variable} h-auto w-80 max-sm:w-52 mx-auto text-center`}
-                    type="text"
+                    type="password"
                     value={pdfEncryptorState.Password}
                     onInput={(e) => updatePassword(e.currentTarget.value)}
                     placeholder="Password"
@@ -219,7 +229,7 @@ export default function PdfEncryptor(): ReactElement {
                   )}
                   <input
                     className={`mb-4 border border-[#AEAEAE] rounded-lg font-mono ${cascadiaCode.variable} h-auto w-80 max-sm:w-52 mx-auto text-center`}
-                    type="text"
+                    type="password"
                     value={pdfEncryptorState.ReTypedPassword}
                     onInput={(e) => startEncryptorValidator(e.currentTarget.value)}
                     placeholder="Verify Password"
