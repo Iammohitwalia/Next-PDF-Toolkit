@@ -19,7 +19,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "PDF Toolkit",
-  description: "Tools that help you manage and manipulate PDF files.",
+  description: "Various tools for manipulating PDF files.",
   icons: {
     shortcut: "/favicon.ico",
     apple: {
@@ -36,14 +36,14 @@ export const metadata: Metadata = {
     card: "summary",
     site: "https://next-pdftoolkit.subhamk.com",
     title: "PDF Toolkit",
-    description: "Tools that help you manage and manipulate PDF files.",
+    description: "Various tools for manipulating PDF files.",
     images: [{ url: "https://next-pdftoolkit.subhamk.com/android-chrome-192x192.png" }],
     creator: "@SubhamK108"
   },
   openGraph: {
     type: "website",
     title: "PDF Toolkit",
-    description: "Tools that help you manage and manipulate PDF files.",
+    description: "Various tools for manipulating PDF files.",
     siteName: "PDF Toolkit",
     url: "https://next-pdftoolkit.subhamk.com",
     images: [{ url: "https://next-pdftoolkit.subhamk.com/android-chrome-192x192.png" }]
@@ -65,7 +65,7 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
         />
         <title>PDF Toolkit</title>
-        <meta name="description" content="Tools that help you manage and manipulate PDF files." />
+        <meta name="description" content="Various tools for manipulating PDF files." />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -74,12 +74,12 @@ export default function RootLayout({
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:url" content="https://next-pdftoolkit.subhamk.com" />
         <meta name="twitter:title" content="PDF Toolkit" />
-        <meta name="twitter:description" content="Tools that help you manage and manipulate PDF files." />
+        <meta name="twitter:description" content="Various tools for manipulating PDF files." />
         <meta name="twitter:image" content="https://next-pdftoolkit.subhamk.com/android-chrome-192x192.png" />
         <meta name="twitter:creator" content="@SubhamK108" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="PDF Toolkit" />
-        <meta property="og:description" content="Tools that help you manage and manipulate PDF files." />
+        <meta property="og:description" content="Various tools for manipulating PDF files." />
         <meta property="og:site_name" content="PDF Toolkit" />
         <meta property="og:url" content="https://next-pdftoolkit.subhamk.com" />
         <meta property="og:image" content="https://next-pdftoolkit.subhamk.com/android-chrome-192x192.png" />
