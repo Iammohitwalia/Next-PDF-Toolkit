@@ -1,6 +1,6 @@
 import { PDFDocument, PDFPage } from "pdf-lib";
 
-export function getPageNumbersToExtract(pagesToExtract: string): number[] {
+function getPageNumbersToExtract(pagesToExtract: string): number[] {
   if (pagesToExtract.includes(",")) {
     const pageNumbersToExtract: number[] = [];
     for (let pageNumber of pagesToExtract.split(",")) {
@@ -25,10 +25,11 @@ export function getPageNumbersToExtract(pagesToExtract: string): number[] {
   return [parseInt(pagesToExtract) - 1];
 }
 
-export async function extractPagesFromPdf(pdf: ArrayBuffer, pageNumbersToExtract: number[]): Promise<string> {
+export async function extractPagesFromPdf(pdf: ArrayBuffer, pagesToExtract: string): Promise<string> {
   const finalPdfDoc: PDFDocument = await PDFDocument.create();
   const sourcePdfDoc: PDFDocument = await PDFDocument.load(pdf);
 
+  const pageNumbersToExtract: number[] = getPageNumbersToExtract(pagesToExtract);
   const copiedPages: PDFPage[] = await finalPdfDoc.copyPages(sourcePdfDoc, pageNumbersToExtract);
   copiedPages.forEach((page) => finalPdfDoc.addPage(page));
 

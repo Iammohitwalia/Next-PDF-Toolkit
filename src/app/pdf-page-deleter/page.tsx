@@ -24,7 +24,7 @@ import UploadStateContainer from "@/components/shared/upload-state-container";
 import ActionStateContainer from "@/components/shared/action-state-container";
 import DownloadContainer from "@/components/shared/download-container";
 import { cascadiaCode } from "@/components/utils/fonts";
-import { deletePagesFromPdf, getPageNumbersToDelete } from "@/components/pdf-page-deleter/pdf-page-deleter-core";
+import { deletePagesFromPdf } from "@/components/pdf-page-deleter/pdf-page-deleter-core";
 import { getTotalPagesFromPdf } from "@/components/pdf-core/pdf-core-shared";
 
 export default function PdfPageDeleter(): ReactElement {
@@ -147,10 +147,9 @@ export default function PdfPageDeleter(): ReactElement {
     dispatch(setSubmitMessage(submitMessage));
     setPdfPageDelState((prev) => ({ ...prev, IsDeletionInitiated: true }));
 
-    const pageNumbersToDelete: number[] = getPageNumbersToDelete(pdfPageDelState.PagesToDelete);
     const pdfWithDeletedPagesUrl: string = await deletePagesFromPdf(
       await pdfPageDelState.UploadedFile!.Content.arrayBuffer(),
-      pageNumbersToDelete
+      pdfPageDelState.PagesToDelete
     );
     const fileName: string = pdfPageDelState.UploadedFile!.Content.name;
     const finalPdfFileName: string = `${fileName.substring(0, fileName.lastIndexOf("."))} (Modified)`;

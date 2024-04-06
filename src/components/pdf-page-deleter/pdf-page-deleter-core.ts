@@ -1,6 +1,6 @@
 import { PDFDocument } from "pdf-lib";
 
-export function getPageNumbersToDelete(pagesToDelete: string): number[] {
+function getPageNumbersToDelete(pagesToDelete: string): number[] {
   if (pagesToDelete.includes(",")) {
     const pageNumbersToDelete: number[] = [];
     for (let pageNumber of pagesToDelete.split(",")) {
@@ -25,9 +25,10 @@ export function getPageNumbersToDelete(pagesToDelete: string): number[] {
   return [parseInt(pagesToDelete) - 1];
 }
 
-export async function deletePagesFromPdf(pdf: ArrayBuffer, pageNumbersToDelete: number[]): Promise<string> {
+export async function deletePagesFromPdf(pdf: ArrayBuffer, pagesToDelete: string): Promise<string> {
   const finalPdfDoc: PDFDocument = await PDFDocument.load(pdf);
 
+  const pageNumbersToDelete: number[] = getPageNumbersToDelete(pagesToDelete);
   let totalPagesDeleted: number = 0;
   for (let pageNumber of pageNumbersToDelete) {
     finalPdfDoc.removePage(pageNumber - totalPagesDeleted);

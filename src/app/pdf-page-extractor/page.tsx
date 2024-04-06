@@ -27,7 +27,7 @@ import {
   PageExtractorValidatorResult,
   validatePagesToExtract
 } from "@/components/pdf-page-extractor/page-extractor-validator";
-import { extractPagesFromPdf, getPageNumbersToExtract } from "@/components/pdf-page-extractor/pdf-page-extractor-core";
+import { extractPagesFromPdf } from "@/components/pdf-page-extractor/pdf-page-extractor-core";
 import { getTotalPagesFromPdf } from "@/components/pdf-core/pdf-core-shared";
 
 export default function PdfPageExtractor(): ReactElement {
@@ -150,10 +150,9 @@ export default function PdfPageExtractor(): ReactElement {
     dispatch(setSubmitMessage(submitMessage));
     setPdfPageExtrState((prev) => ({ ...prev, IsExtractionInitiated: true }));
 
-    const pageNumbersToExtract: number[] = getPageNumbersToExtract(pdfPageExtrState.PagesToExtract);
     const pdfWithExtractedPagesUrl: string = await extractPagesFromPdf(
       await pdfPageExtrState.UploadedFile!.Content.arrayBuffer(),
-      pageNumbersToExtract
+      pdfPageExtrState.PagesToExtract
     );
     const fileName: string = pdfPageExtrState.UploadedFile!.Content.name;
     const finalPdfFileName: string = `${fileName.substring(0, fileName.lastIndexOf("."))} (Extracted)`;
