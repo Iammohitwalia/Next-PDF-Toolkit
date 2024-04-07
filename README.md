@@ -1,8 +1,8 @@
 # Next-PDF-Toolkit
 
-A Web Application built with NextJS and TailwindCSS that has various tools for manipulating PDF files.
+### A Web Application built with NextJS and TailwindCSS that has various tools for manipulating PDF files.
 
-### Visit the app [Here](https://next-pdftoolkit.subhamk.com)
+#### Visit the app [Here](https://next-pdftoolkit.subhamk.com)
 
 ## Tools Available
 
